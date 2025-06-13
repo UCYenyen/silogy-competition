@@ -1,103 +1,116 @@
+'use client';
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Navbar from "@/components/navbar";
+import gsap from "gsap";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const starsRef = useRef<HTMLDivElement>(null);
+  const earthWrapperRef = useRef<HTMLDivElement>(null);
+  const [stars, setStars] = useState<
+    { top: number; left: number; size: number }[]
+  >([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  useEffect(() => {
+    const generatedStars = Array.from({ length: 50 }).map(() => ({
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      size: 5 + Math.random() * 5,
+    }));
+    setStars(generatedStars);
+  }, []);
+
+  // Subtle floating animation for stars
+  useEffect(() => {
+    if (!starsRef.current) return;
+    const stars = gsap.utils.toArray<HTMLElement>(".star-parallax");
+    stars.forEach((star, i) => {
+      gsap.to(star, {
+        x: `+=${gsap.utils.random(-10, 10)}`,
+        y: `+=${gsap.utils.random(-10, 10)}`,
+        duration: gsap.utils.random(2, 4),
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut",
+        delay: gsap.utils.random(0, 2),
+      });
+    });
+  }, [stars]);
+
+  // Mouse parallax effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      const x = (e.clientX / innerWidth - 0.5) * 2;
+      const y = (e.clientY / innerHeight - 0.5) * 2;
+
+      gsap.utils.toArray<HTMLElement>(".star-parallax").forEach((star, i) => {
+        const depth = (i % 10) + 1;
+        gsap.to(star, {
+          x: `+=${x * depth * 5}`,
+          y: `+=${y * depth * 5}`,
+          duration: 1,
+          overwrite: "auto",
+        });
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Earth rotation animation
+  useEffect(() => {
+    if (earthWrapperRef.current) {
+      gsap.to(earthWrapperRef.current, {
+        rotate: 360,
+        duration: 180,
+        repeat: -1,
+        ease: "linear",
+      });
+    }
+  }, []);
+
+  return (
+    <>
+      <main className="flex min-h-screen w-full flex-col bg-gradient-to-b from-[#0B1741] to-[#014576] relative overflow-hidden">
+        {/* Random stars background */}
+        <div ref={starsRef} className="pointer-events-none absolute inset-0 w-full h-full z-[5]">
+          {stars.map((star, i) => (
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              key={i}
+              src="/images/star.svg"
+              alt="Star"
+              width={star.size}
+              height={star.size}
+              className="star-parallax absolute"
+              style={{
+                top: `${star.top}%`,
+                left: `${star.left}%`,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+              }}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          ))}
+        </div>
+        <div
+          id="container"
+          className="flex flex-1 flex-col max-h-screen overflow-hidden justify-start items-center"
+        >
+          <div className="relative flex-1 w-full h-full flex justify-center items-center">
+            <div ref={earthWrapperRef} className="w-30%] z-10">
+              <Image
+                src="/images/Earth.svg"
+                alt="Earth"
+                width={100}
+                height={100}
+                className="w-full h-auto"
+                draggable={false}
+              />
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
