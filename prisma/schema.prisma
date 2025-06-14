@@ -1,22 +1,69 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../app/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  username  String?
+model users {
+  user_id       Int           @id @default(autoincrement())
+  name          String
+  email         String        @unique
+  phone_number  String?
+  password_hash String
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now()) @updatedAt
+  quests        quests[]      @relation("RequesterQuests")
+  staff         staff?        // Optional relationship - user becomes staff if this exists
+  user_quests   user_quests[]
+}
+
+model roles {
+  role_id     Int     @id @default(autoincrement())
+  role_name   String  @unique
+  description String?
+  staff       staff[]
+}
+
+model staff {
+  staff_id   Int      @id @default(autoincrement())
+  user_id    Int      @unique
+  bio        String?
+  role_id    Int
+  created_at DateTime @default(now())
+  role       roles    @relation(fields: [role_id], references: [role_id])
+  user       users    @relation(fields: [user_id], references: [user_id])
+}
+
+model quests {
+  quest_id      Int           @id @default(autoincrement())
+  requester_id  Int
+  title         String
+  description   String
+  location      String
+  urgency_level String
+  status        String        @default("Open")
+  due_date      DateTime?
+  created_at    DateTime      @default(now())
+  requester     users         @relation("RequesterQuests", fields: [requester_id], references: [user_id])
+  user_quests   user_quests[]
+}
+
+model user_quests {
+  user_quest_id Int       @id @default(autoincrement())
+  user_id       Int
+  quest_id      Int
+  offer_message String?
+  status        String    @default("Pending")
+  offered_at    DateTime  @default(now())
+  accepted_at   DateTime?
+  completed_at  DateTime?
+  quest         quests    @relation(fields: [quest_id], references: [quest_id])
+  user          users     @relation(fields: [user_id], references: [user_id])
+
+  @@unique([user_id, quest_id])
 }

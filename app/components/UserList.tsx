@@ -2,14 +2,18 @@
 import { useState, useEffect } from 'react'
 
 interface User {
-  id: number
+  user_id: number
+  name: string
   email: string
-  username: string | null
+  phone_number: string
+  created_at: string
+  updated_at: string
 }
 
 export default function UserList() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchUsers()
@@ -17,39 +21,93 @@ export default function UserList() {
 
   const fetchUsers = async () => {
     try {
+      setLoading(true)
       const response = await fetch('/api/users')
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
       const data = await response.json()
-      setUsers(data)
-    } catch (error) {
-      console.error('Error fetching users:', error)
+      
+      if (Array.isArray(data)) {
+        setUsers(data)
+        setError(null)
+      } else {
+        setError('Invalid data format received')
+      }
+    } catch (err) {
+      console.error('Error fetching users:', err)
+      setError(err instanceof Error ? err.message : 'Failed to fetch users')
     } finally {
       setLoading(false)
     }
   }
 
-  if (loading) return <div className="text-center">Loading users...</div>
+  if (loading) {
+    return (
+      <div className="w-full max-w-4xl mx-auto p-4">
+        <div className="text-center text-gray-500">Loading users...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="w-full max-w-4xl mx-auto p-4">
+        <div className="text-center text-red-500">Error: {error}</div>
+      </div>
+    )
+  }
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Users in Database</h2>
+    <div className="w-full max-w-4xl mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-6 text-center">All Users ({users.length})</h2>
+      
       {users.length === 0 ? (
-        <p className="text-gray-500">No users found in the database.</p>
+        <div className="text-center text-gray-500 py-8">
+          No users found in the database.
+        </div>
       ) : (
-        <div className="space-y-3">
+        <div className="grid gap-4">
           {users.map((user) => (
-            <div key={user.id} className="p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
-              <div className="grid grid-cols-3 gap-4">
+            <div 
+              key={user.user_id} 
+              className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
-                  <strong className="text-gray-700">ID:</strong>
-                  <p className="text-gray-900">{user.id}</p>
+                  <label className="text-sm font-medium text-gray-500">User ID</label>
+                  <p className="text-lg font-semibold text-gray-900">{user.user_id}</p>
                 </div>
+                
                 <div>
-                  <strong className="text-gray-700">Email:</strong>
+                  <label className="text-sm font-medium text-gray-500">Name</label>
+                  <p className="text-lg font-semibold text-gray-900">{user.name}</p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Email</label>
                   <p className="text-gray-900">{user.email}</p>
                 </div>
+                
                 <div>
-                  <strong className="text-gray-700">Username:</strong>
-                  <p className="text-gray-900">{user.username || 'Not set'}</p>
+                  <label className="text-sm font-medium text-gray-500">Phone</label>
+                  <p className="text-gray-900">{user.phone_number || 'Not provided'}</p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Created</label>
+                  <p className="text-gray-900">
+                    {new Date(user.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Updated</label>
+                  <p className="text-gray-900">
+                    {new Date(user.updated_at).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
             </div>
