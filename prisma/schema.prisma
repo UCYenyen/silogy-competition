@@ -10,45 +10,51 @@ datasource db {
 }
 
 model users {
-  user_id       Int           @id @default(autoincrement())
+  user_id       Int      @id @default(autoincrement())
   name          String
-  email         String        @unique
+  email         String   @unique
   phone_number  String?
   password_hash String
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @default(now()) @updatedAt
+
+  // Relations
+  staff         staff?
   quests        quests[]      @relation("RequesterQuests")
-  staff         staff?        // Optional relationship - user becomes staff if this exists
   user_quests   user_quests[]
 }
 
 model roles {
   role_id     Int     @id @default(autoincrement())
-  role_name   String  @unique
-  description String?
+  role_name   String  @unique @db.Text
+  description String? @db.Text
+  
+  // Relations
   staff       staff[]
 }
 
 model staff {
   staff_id   Int      @id @default(autoincrement())
   user_id    Int      @unique
-  bio        String?
+  bio        String?  @db.Text
   role_id    Int
-  created_at DateTime @default(now())
-  role       roles    @relation(fields: [role_id], references: [role_id])
-  user       users    @relation(fields: [user_id], references: [user_id])
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  
+  // Relations
+  user       users @relation(fields: [user_id], references: [user_id])
+  role       roles @relation(fields: [role_id], references: [role_id])
 }
 
 model quests {
   quest_id      Int           @id @default(autoincrement())
   requester_id  Int
-  title         String
-  description   String
-  location      String
-  urgency_level String
-  status        String        @default("Open")
-  due_date      DateTime?
-  created_at    DateTime      @default(now())
+  title         String        @db.Text
+  description   String        @db.Text
+  location      String        @db.Text
+  urgency_level String        @db.Text
+  status        String        @default("Open") @db.Text
+  due_date      DateTime?     @db.Timestamp(6)
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  
+  // Relations
   requester     users         @relation("RequesterQuests", fields: [requester_id], references: [user_id])
   user_quests   user_quests[]
 }
@@ -57,13 +63,15 @@ model user_quests {
   user_quest_id Int       @id @default(autoincrement())
   user_id       Int
   quest_id      Int
-  offer_message String?
-  status        String    @default("Pending")
-  offered_at    DateTime  @default(now())
-  accepted_at   DateTime?
-  completed_at  DateTime?
-  quest         quests    @relation(fields: [quest_id], references: [quest_id])
-  user          users     @relation(fields: [user_id], references: [user_id])
-
+  offer_message String?   @db.Text
+  status        String    @default("Pending") @db.Text
+  offered_at    DateTime  @default(now()) @db.Timestamp(6)
+  accepted_at   DateTime? @db.Timestamp(6)
+  completed_at  DateTime? @db.Timestamp(6)
+  
+  // Relations
+  user          users  @relation(fields: [user_id], references: [user_id])
+  quest         quests @relation(fields: [quest_id], references: [quest_id])
+  
   @@unique([user_id, quest_id])
 }
