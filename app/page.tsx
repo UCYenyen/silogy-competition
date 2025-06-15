@@ -257,3 +257,5 @@ export default function Home() {
     </div>
   );
 }
+
+//INI CUMA BUAT COPAS AKU KE PAGE.TSX E, ini buat nunjuin all user and staff mbe login register page
