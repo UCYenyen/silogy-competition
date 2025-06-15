@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function QuestCard(){
     return(
-        <div className="bg-[#F8FAFA] h-[300px] md:h-[500px] w-full shadow-lg rounded-2xl flex flex-col gap-4">
-            <div className="rounded-2xl overflow-hidden h-[400px] md:h-[720px] w-full bg-[#93CBDC]/30 p-1 md:p-4">
+        <div className="bg-[#F8FAFA] h-[250px] md:h-[500px] w-full shadow-md rounded-2xl flex flex-col gap-1">
+            <div className="rounded-2xl overflow-hidden h-full md:h-[720px] w-full bg-[#93CBDC]/30 p-1 md:p-4">
                 <Image
                 className="w-full h-full object-cover object-center rounded-2xl"
                 src={"/images/gotong-royong-1.svg"}
@@ -18,7 +18,7 @@ export default function QuestCard(){
                     Bersih Bersih
                 </h1>
                 <h1 className="px-1 md:px-4 text-[#939393] font-bold text-xs md:text-2xl text-start ">
-                    gang banana
+                    Jalan Gajah Mada No.30, Ponorogo
                 </h1>
                 </div>
                 <h1 className="md:mt-8 px-1 md:px-4 text-[#0189BB] font-bold text-[80%] md:text-2xl text-start">

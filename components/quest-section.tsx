@@ -61,7 +61,7 @@ export default function QuestSection() {
     };
 
     return(
-        <section className="min-h-screen gap-8 flex p-4 xl:pt-48 xl:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED]">
+        <section className="min-h-screen gap-8 flex p-12 xl:pt-48 xl:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED]">
             <div className="mt-24 w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
             <h1 className="text-[#322C2C] font-bold text-5xl text-center">
                 Permintaan Bantuan
