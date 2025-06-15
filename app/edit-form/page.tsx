@@ -1,4 +1,4 @@
-export default function AskHelpForm() {
+export default function EditForm() {
     return (
         <div
             className="relative min-h-screen pt-8 pb-16 px-4 sm:px-6 lg:px-8"
@@ -8,7 +8,7 @@ export default function AskHelpForm() {
                 <div className="max-w-2xl mx-auto">
                     <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 sm:p-10">
                         <h1 className="text-2xl sm:text-3xl font-bold text-slate-700 text-center mb-8">
-                            Buat Permintaan Bantuan
+                            Edit Permintaan Bantuan
                         </h1>
                         <form className="space-y-6">
                             {/* Title and Location Row */}
@@ -51,27 +51,28 @@ export default function AskHelpForm() {
                                         Status
                                     </label>
                                     <div className="relative">
-                                    <select
-                                        className="w-full px-4 py-4 pr-10 bg-slate-200 rounded-2xl border-0 appearance-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all duration-200 text-slate-700"
-                                    >
-                                        <option value="">Pilih status</option>
-                                        <option value="high">High</option>
-                                        <option value="medium">Medium</option>
-                                        <option value="low">Low</option>
-                                    </select>
-                                    {/* Dropdown Icon */}
-                                    <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                                        <svg
-                                        className="w-5 h-5 text-slate-500"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        viewBox="0 0 24 24"
+                                        <select
+                                            className="w-full px-4 py-4 pr-10 bg-slate-200 rounded-2xl border-0 appearance-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all duration-200 text-slate-700"
                                         >
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </div>
-                                    </div>
+                                            <option value="">Pilih status</option>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                        {/* Dropdown Icon */}
+                                        <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
+                                            <svg
+                                            className="w-5 h-5 text-slate-500"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            viewBox="0 0 24 24"
+                                            >
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </div>
+                                        </div>
+
                                 </div>
                             </div>
 
@@ -93,7 +94,7 @@ export default function AskHelpForm() {
                                     type="submit"
                                     className="px-10 py-3 bg-blue-300 hover:bg-blue-400 text-slate-800 font-semibold rounded-2xl shadow-md transition-all duration-200"
                                 >
-                                    Publish
+                                    Simpan
                                 </button>
                             </div>
                         </form>
