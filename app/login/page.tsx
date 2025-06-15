@@ -28,18 +28,15 @@ export default function LoginPage() {
           setMessage(data.error || "Login failed: Invalid credentials");
           setLoading(false);
           return;
-        } else {
-          // Network/server error, retry
-          setMessage("Koneksi bermasalah, mencoba lagi...");
         }
-      } catch (err) {
+      } catch {
         setMessage("Koneksi bermasalah, mencoba lagi...");
       }
       attempt++;
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
-    setMessage("Gagal login setelah beberapa percobaan. Silakan cek koneksi Anda.");
     setLoading(false);
+    setMessage("Gagal login setelah beberapa percobaan. Silakan cek koneksi Anda.");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -114,14 +111,15 @@ export default function LoginPage() {
               <button
                 type="submit"
                 className="px-12 bg-[#93CBDC] text-[#163760] text-xl font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
-             >
-            {loading ? "Memproses..." : "Masuk"}
+                disabled={loading}
+              >
+                {loading ? "Memproses..." : "Masuk"}
               </button>
             </div>
           </form>
           {message && (
-          <div className="mt-4 text-center text-red-600">{message}</div>
-        )}
+            <div className="mt-4 text-center text-red-600">{message}</div>
+          )}
           <div className="text-center text-sm text-[#163760]">
             Belum punya akun?{" "}
             <a
@@ -131,9 +129,6 @@ export default function LoginPage() {
               Daftar
             </a>
           </div>
-          {message && (
-            <div className="mt-4 text-center text-red-600">{message}</div>
-          )}
         </div>
       </div>
     </div>

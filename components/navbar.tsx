@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<object | null>(null);
 
   useEffect(() => {
     const navbar = navRef.current;
