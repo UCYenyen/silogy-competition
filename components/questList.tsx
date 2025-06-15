@@ -2,7 +2,16 @@
 import { useEffect, useState } from 'react'
 
 export default function QuestList() {
-  const [quests, setQuests] = useState<any[]>([])
+  type Quest = {
+    quest_id: number;
+    title: string;
+    location: string;
+    urgency_level: string;
+    imageUrl?: string;
+    // Add other fields as needed
+  }
+
+  const [quests, setQuests] = useState<Quest[]>([]);
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -13,7 +22,7 @@ export default function QuestList() {
         const res = await fetch('/api/quests')
         const data = await res.json()
         setQuests(data.quests || [])
-      } catch (err) {
+      } catch {
         setError('Failed to fetch quests')
       } finally {
         setLoading(false)
