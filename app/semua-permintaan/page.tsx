@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,16 +9,44 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
+type UserData = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 export default function Dashboard() {
     const navRef = useRef<HTMLElement>(null);
     const [user, setUser] = useState<object | null>(null);
-
+    
     const cards = Array(6).fill({
         title: "Bersih-bersih",
         location: "gang banana",
         price: "Rp.90,000,00",
         image: "/images/gotong-royong-1.svg", 
     });
+    const supabase = createClientComponentClient();
+    
+      useEffect(() => {
+        async function getUser() {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+    
+          if (session) {
+            const {
+              data: { user },
+            } = await supabase.auth.getUser();
+            setUser({
+              id: user?.id ?? "",
+              name: user?.user_metadata?.name || "User",
+              email: user?.email ?? "",
+            });
+          }
+        }
+    
+        getUser();
+      }, [supabase]);
 
     // Navbar animation logic - ONLY hide/show, NO color changes
     useEffect(() => {
@@ -88,18 +117,6 @@ export default function Dashboard() {
         };
     }, []);
 
-    // Check user authentication
-    useEffect(() => {
-        fetch('/api/me').then(async res => {
-            if (res.ok) {
-                const data = await res.json();
-                setUser(data.user);
-            } else {
-                setUser(null);
-            }
-        });
-    }, []);
-
     return (
         <div className="bg-[#EDEDED] min-h-screen">
             {/* Integrated Navbar - FIXED COLOR */}
@@ -116,7 +133,7 @@ export default function Dashboard() {
                     {user ? (
                         <>
                             <Link
-                                href="/dashboard"
+                                href="/user-dashboard"
                                 className="flex items-center justify-center px-2 py-1 rounded-full hover:bg-gray-200 transition min-w-10 min-h-10"
                             >
                                 <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-300">

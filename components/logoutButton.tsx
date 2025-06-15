@@ -6,7 +6,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <button onClick={functionLogout} className="border p-2 rounded-lg border-2">
+    <button onClick={functionLogout} className="p-4 bg-red-500 text-2xl rounded-2xl h-fit text-white">
       Logout
     </button>
   );

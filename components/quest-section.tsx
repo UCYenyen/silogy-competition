@@ -115,7 +115,7 @@ export default function QuestSection() {
           Semua Permintaan
         </h1>
         <button
-          onClick={() => (window.location.href = "/buat-permintaan")}
+          onClick={() => (window.location.href = "/form-minta-bantuan")}
           className="reveal bg-blue-500 hover:bg-blue-600 text-white text-base rounded-md px-4 py-2"
           type="button"
         >
