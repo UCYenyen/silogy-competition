@@ -31,7 +31,7 @@ export default function RegisterPage() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/background-home-desktop.svg')" }}
     >
-      <div className="bg-white/60 backdrop-blur-md rounded-2xl px-10 py-8 shadow-lg w-full max-w-md">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl px-10 py-8 shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-bold text-[#163760] text-center mb-6">Daftar</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

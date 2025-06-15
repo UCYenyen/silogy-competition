@@ -99,10 +99,10 @@ export default function Navbar() {
       className="fixed z-[200] w-full p-6 md:p-12 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
       style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
     >
-      <div className="flex items-center gap-4">
-        <Link href="/" className="">Logo</Link>
+      <div className="flex items-center gap-4 shadow-xs">
+        <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
       </div>
-      <div className="hidden md:flex items-center gap-4">
+      <div className="hidden md:flex items-center gap-4 hadow-xs">
         <Link href="/about" className="hover:underline">Home</Link>
         <Link href="/contact" className="hover:underline">Daftar Bantuan</Link>
         <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
@@ -110,7 +110,7 @@ export default function Navbar() {
         </div>
       </div>
       {/* Mobile menu button */}
-      <div className="flex flex-col gap-1.5 md:hidden">
+      <div className="flex flex-col gap-1.5 md:hidden hadow-xs">
         <div className="w-10 bg-white h-1.5"></div>
         <div className="w-10 bg-white h-1.5"></div>
       </div>

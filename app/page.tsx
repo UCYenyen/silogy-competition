@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <main className="main-section bg-[url('/images/background-home-desktop.svg')] bg-center bg-cover flex min-h-screen min-w-screen flex-col items-center justify-center">
+      <main className="main-section bg-[url('/images/background-home-no-noise.svg')] md:bg-[url('/images/background-home-desktop.svg')] bg-center bg-cover flex min-h-screen min-w-screen flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center gap-8">
           <h1 className="reveal font-heading text-7xl font-bold sm:text-[150px] md:text-[200px] text-[#FFFFFF] w-screen text-center text-shadow-lg text-shadow-black/50">
             TolongYuk!
