@@ -9,48 +9,52 @@ export default function DashboardPage() {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ title: '', description: '', location: '', urgency_level: '', due_date: '' });
   const [message, setMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [checkingRole, setCheckingRole] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const checkUser = async () => {
+    const fetchUserAndRole = async () => {
       const res = await fetch("/api/me");
       if (!res.ok) {
-        router.replace("/login");
+        setCheckingRole(false);
         return;
       }
       const data = await res.json();
       setUser(data.user);
 
-      // Check staff/admin and redirect before rendering anything
+      // Check if user is staff/admin
       const staffRes = await fetch("/api/staff");
       if (staffRes.ok) {
         const staffList = await staffRes.json();
         const staff = staffList.find(
           (s: any) => s.user_id === data.user.user_id
         );
-        if (staff && staff.role && staff.role.role_name === "admin") {
-          router.replace("/dashboard/admin");
-          return;
-        }
-        if (staff && staff.role && staff.role.role_name !== "admin") {
-          router.replace("/dashboard/staff");
-          return;
+        if (staff) {
+          if (staff.role && staff.role.role_name === "admin") {
+            router.replace("/dashboard/admin");
+            return;
+          } else {
+            router.replace("/dashboard/staff");
+            return;
+          }
         }
       }
-      setLoading(false);
+      setCheckingRole(false);
     };
-    checkUser();
+    fetchUserAndRole();
   }, [router]);
 
   useEffect(() => {
     if (user) fetchQuests();
+    // eslint-disable-next-line
   }, [user]);
 
   const fetchQuests = async () => {
     const res = await fetch('/api/quests?userOnly=1');
     const data = await res.json();
-    setQuests(data.quests || []);
+    if (data.quests) {
+      setQuests(data.quests);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -76,7 +80,7 @@ export default function DashboardPage() {
     }
   };
 
-  if (loading) {
+  if (checkingRole) {
     return <div>Loading...</div>;
   }
 

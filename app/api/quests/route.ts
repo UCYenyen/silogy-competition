@@ -63,12 +63,12 @@ async function acceptOrDeclineQuest(req: Request) {
 // POST: Create a new quest
 export async function POST(req: Request) {
   try {
-    const cookieStore = await cookies()
+    const cookieStore = cookies()
     const userIdRaw = cookieStore.get('user_id')?.value
-    if (!userIdRaw || !/^\d+$/.test(userIdRaw)) {
+    if (!userIdRaw || isNaN(Number(userIdRaw))) {
       return NextResponse.json({ error: 'Not authenticated or invalid user_id' }, { status: 401 })
     }
-    const requester_id = parseInt(userIdRaw, 10)
+    const requester_id = Number(userIdRaw)
 
     const { title, description, location, urgency_level, due_date } = await req.json()
     if (!title || !description || !location || !urgency_level) {
@@ -93,7 +93,6 @@ export async function POST(req: Request) {
     })
     return NextResponse.json({ quest })
   } catch (error) {
-    console.error('Quest creation error:', error)
     return NextResponse.json({ error: 'Failed to create quest', details: String(error) }, { status: 500 })
   }
 }
@@ -101,11 +100,11 @@ export async function POST(req: Request) {
 // GET: List all accepted quests
 export async function GET(req: NextRequest) {
   const userOnly = req.nextUrl.searchParams.get('userOnly')
-  const cookieStore = await cookies()
+  const cookieStore = cookies()
   const userIdRaw = cookieStore.get('user_id')?.value
   let where: any = { confirmation_status: 'accepted' }
-  if (userOnly && userIdRaw && /^\d+$/.test(userIdRaw)) {
-    where = { requester_id: parseInt(userIdRaw, 10) }
+  if (userOnly && userIdRaw && !isNaN(Number(userIdRaw))) {
+    where = { requester_id: Number(userIdRaw) }
   }
   const quests = await prisma.quests.findMany({
     where,

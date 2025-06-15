@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { prisma } from '../../lib/prisma'
 
 export async function POST(req: Request) {
@@ -10,7 +11,6 @@ export async function POST(req: Request) {
 
     const user = await prisma.users.findUnique({ where: { email } })
     if (!user || user.password_hash !== password) {
-      // In production, use hashed passwords!
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       httpOnly: true,
       path: '/',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7 // 7 days
+      maxAge: 60 * 60 * 24 * 7
     })
     return res
   } catch (error) {

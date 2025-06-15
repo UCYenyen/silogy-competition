@@ -1,20 +1,53 @@
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { prisma } from '../../../lib/prisma'
 
-export async function GET(_req: Request, { params }: { params: { quest_id: string } }) {
-  try {
-    const { quest_id } = params
-    if (!/^\d+$/.test(quest_id)) {
-      return NextResponse.json({ error: 'Invalid quest ID' }, { status: 400 })
-    }
-    const quest = await prisma.quests.findUnique({
-      where: { quest_id: parseInt(quest_id, 10) }
-    })
-    if (!quest) {
-      return NextResponse.json({ error: 'Quest not found' }, { status: 404 })
-    }
-    return NextResponse.json({ quest })
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch quest', details: String(error) }, { status: 500 })
+async function isAdmin(user_id: number) {
+  const staff = await prisma.staff.findUnique({
+    where: { user_id },
+    include: { role: true }
+  })
+  return staff && staff.role.role_name === 'admin'
+}
+
+export async function GET() {
+  const cookieStore = cookies()
+  const userIdRaw = cookieStore.get('user_id')?.value
+  if (!userIdRaw || isNaN(Number(userIdRaw))) {
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
+  const user_id = Number(userIdRaw)
+  if (!(await isAdmin(user_id))) {
+    return NextResponse.json({ error: 'Not authorized' }, { status: 403 })
+  }
+  const quests = await prisma.quests.findMany({
+    where: { confirmation_status: 'undecided' },
+    orderBy: { created_at: 'desc' }
+  })
+  return NextResponse.json({ quests })
+}
+
+export async function POST(req: Request) {
+  const cookieStore = cookies()
+  const userIdRaw = cookieStore.get('user_id')?.value
+  if (!userIdRaw || isNaN(Number(userIdRaw))) {
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+  }
+  const user_id = Number(userIdRaw)
+  if (!(await isAdmin(user_id))) {
+    return NextResponse.json({ error: 'Not authorized' }, { status: 403 })
+  }
+  const { quest_id, action } = await req.json()
+  if (!quest_id || !['accepted', 'declined'].includes(action)) {
+    return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
+  }
+  let updateData: any = { confirmation_status: action }
+  if (action === 'declined') {
+    updateData.status = 'Cancelled'
+  }
+  const quest = await prisma.quests.update({
+    where: { quest_id },
+    data: updateData
+  })
+  return NextResponse.json({ quest })
 }
