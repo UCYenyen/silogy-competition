@@ -63,7 +63,7 @@ export default function QuestSection() {
     <section className="min-h-screen gap-8 flex p-12 xl:pt-48 xl:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED]">
       <div className="reveal mt-24 w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
       <h1 className="reveal text-[#322C2C] font-bold text-5xl text-center">
-        Permintaan Bantuan
+        Semua Permintaan
       </h1>
       <div className="reveal flex flex-col gap-8 p-4 rounded-lg shadow-lg justify-start items-center bg-[#CDEBF3] w-full">
         <div className="flex flex-col w-full items-center gap-8">
