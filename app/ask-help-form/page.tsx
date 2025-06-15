@@ -52,9 +52,9 @@ export default function AskHelpForm() {
                                     </label>
                                     <select className="w-full px-4 py-4 bg-slate-200 rounded-2xl border-0 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all duration-200 text-slate-700">
                                         <option value="">Pilih status</option>
-                                        <option value="urgent">Urgent</option>
-                                        <option value="normal">Normal</option>
-                                        <option value="low">Low Priority</option>
+                                        <option value="high">High</option>
+                                        <option value="medium">medium</option>
+                                        <option value="low">Low</option>
                                     </select>
                                 </div>
                             </div>
