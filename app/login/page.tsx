@@ -1,6 +1,14 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState<string | null>(null);
@@ -10,64 +18,49 @@ export default function LoginPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const loginWithRetry = async (maxRetries = 10, delayMs = 1500) => {
-    let attempt = 0;
-    while (attempt < maxRetries) {
-      try {
-        const res = await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        });
-        const data = await res.json();
-        if (res.ok) {
-          setMessage("Login successful!");
-          window.location.href = "/";
-          return;
-        } else if (res.status === 401) {
-          setMessage(data.error || "Login failed: Invalid credentials");
-          setLoading(false);
-          return;
-        }
-      } catch {
-        setMessage("Koneksi bermasalah, mencoba lagi...");
-      }
-      attempt++;
-      await new Promise((resolve) => setTimeout(resolve, delayMs));
-    }
-    setLoading(false);
-    setMessage("Gagal login setelah beberapa percobaan. Silakan cek koneksi Anda.");
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
     setLoading(true);
-    await loginWithRetry();
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
+
+    if (error) {
+      setMessage("Login gagal. Silakan cek email dan password Anda.");
+      setLoading(false);
+      return;
+    }
+
+    setMessage("Login berhasil!");
+    // Redirect or reload as needed
+    window.location.href = "/";
   };
 
   return (
     <div>
       <nav 
-      className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
-    >
-      <div className="flex items-center gap-4 shadow-xs">
-        <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
-      </div>
-      <div className="hidden md:flex items-center gap-4 shadow-xs">
-        <Link href="/" className="hover:underline">Home</Link>
-        <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
-        <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
-          <Link href="/register" className="hover:underline px-4">Register</Link>
+        className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+      >
+        <div className="flex items-center gap-4 shadow-xs">
+          <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
         </div>
-      </div>
-      {/* Mobile menu button */}
-      <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
-        <div className="w-10 bg-white h-1.5"></div>
-        <div className="w-10 bg-white h-1.5"></div>
-      </div>
-    </nav>
+        <div className="hidden md:flex items-center gap-4 shadow-xs">
+          <Link href="/" className="hover:underline">Home</Link>
+          <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
+          <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
+            <Link href="/register" className="hover:underline px-4">Register</Link>
+          </div>
+        </div>
+        {/* Mobile menu button */}
+        <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
+          <div className="w-10 bg-white h-1.5"></div>
+          <div className="w-10 bg-white h-1.5"></div>
+        </div>
+      </nav>
       <div
         className="min-h-screen flex items-center justify-center bg-cover bg-center"
         style={{

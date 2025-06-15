@@ -1,10 +1,18 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { createClient } from '@supabase/supabase-js'
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', phone_number: '', password: '' })
   const [message, setMessage] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -13,18 +21,29 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setMessage(null)
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+    setLoading(true)
+
+    // Register user with Supabase
+    const { data, error } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: {
+          name: form.name,
+          phone_number: form.phone_number,
+        },
+      },
     })
-    const data = await res.json()
-    if (res.ok) {
-      setMessage('Registration successful!')
-      setForm({ name: '', email: '', phone_number: '', password: '' })
-    } else {
-      setMessage(data.error || 'Registration failed')
+
+    if (error) {
+      setMessage(error.message || 'Registration failed')
+      setLoading(false)
+      return
     }
+
+    setMessage('Registration successful! Please check your email to verify your account.')
+    setForm({ name: '', email: '', phone_number: '', password: '' })
+    setLoading(false)
   }
 
   return (
@@ -33,25 +52,25 @@ export default function RegisterPage() {
       style={{ backgroundImage: "url('/images/background-home-desktop.svg')" }}
     >
       <nav 
-      className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
-    >
-      <div className="flex items-center gap-4 shadow-xs">
-        <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
-      </div>
-      <div className="hidden md:flex items-center gap-4 shadow-xs">
-        <Link href="/" className="hover:underline">Home</Link>
-        <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
-        <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
-          <Link href="/login" className="hover:underline px-4">Login</Link>
+        className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+      >
+        <div className="flex items-center gap-4 shadow-xs">
+          <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
         </div>
-      </div>
-      {/* Mobile menu button */}
-      <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
-        <div className="w-10 bg-white h-1.5"></div>
-        <div className="w-10 bg-white h-1.5"></div>
-      </div>
-    </nav>
+        <div className="hidden md:flex items-center gap-4 shadow-xs">
+          <Link href="/" className="hover:underline">Home</Link>
+          <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
+          <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
+            <Link href="/login" className="hover:underline px-4">Login</Link>
+          </div>
+        </div>
+        {/* Mobile menu button */}
+        <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
+          <div className="w-10 bg-white h-1.5"></div>
+          <div className="w-10 bg-white h-1.5"></div>
+        </div>
+      </nav>
       <div
         className="min-h-screen flex items-center justify-center bg-cover bg-center"
         style={{
@@ -60,7 +79,7 @@ export default function RegisterPage() {
       >
         <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-10 py-16 shadow-lg w-full justify-between max-w-[40rem]">
           <h1 className="text-3xl font-bold text-[#163760] text-center mb-12">
-            Masuk
+            Daftar
           </h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -72,7 +91,7 @@ export default function RegisterPage() {
                 value={form.name}
                 onChange={handleChange}
                 required
-                placeholder="Masukkan email"
+                placeholder="Masukkan Nama"
                 className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
               />
             </div>
@@ -86,7 +105,7 @@ export default function RegisterPage() {
                 value={form.email}
                 onChange={handleChange}
                 required
-                placeholder="Masukkan password"
+                placeholder="Masukkan Email"
                 className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
               />
             </div>
@@ -109,6 +128,7 @@ export default function RegisterPage() {
               </label>
               <input
                 name="password"
+                type="password"
                 value={form.password}
                 onChange={handleChange}
                 required
@@ -116,13 +136,13 @@ export default function RegisterPage() {
                 className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
               />
             </div>
-
             <div className="flex justify-center mt-12">
               <button
                 type="submit"
                 className="px-12 bg-[#93CBDC] text-[#163760] text-xl font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
+                disabled={loading}
               >
-                Daftar
+                {loading ? "Memproses..." : "Daftar"}
               </button>
             </div>
           </form>
