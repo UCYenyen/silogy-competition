@@ -27,14 +27,16 @@ export default function DashboardPage() {
       if (staffRes.ok) {
         const staffList = await staffRes.json();
         const staff = staffList.find(
-          (s: any) =>
-            s.user_id === data.user.user_id &&
-            s.role &&
-            s.role.role_name === "admin"
+          (s: any) => s.user_id === data.user.user_id
         );
         if (staff) {
-          router.replace("/dashboard/admin");
-          return;
+          if (staff.role && staff.role.role_name === "admin") {
+            router.replace("/dashboard/admin");
+            return;
+          } else {
+            router.replace("/dashboard/staff");
+            return;
+          }
         }
       }
       setCheckingAdmin(false);

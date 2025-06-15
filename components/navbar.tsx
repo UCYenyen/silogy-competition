@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const navbar = navRef.current;
@@ -93,21 +94,45 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    fetch('/api/me').then(async res => {
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
+
   return (
     <nav 
       ref={navRef}
-      className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+      className="fixed z-[200] w-full p-6 md:p-12 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
       style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
     >
       <div className="flex items-center gap-4 shadow-xs">
         <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
       </div>
       <div className="hidden md:flex items-center gap-4 hadow-xs">
-        <Link href="/" className="hover:underline">Home</Link>
-        <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
-        <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
+        <Link href="/semua-permintaan" className="hover:underline">Permintaan Bantuan</Link>
+        {user ? (
+          <>
+            <Link
+              href="/dashboard"
+              className="flex items-center justify-center px-2 py-1 rounded-full hover:bg-gray-200 transition min-w-10 min-h-10"
+            >
+              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-300">
+                <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4" fill="#163760" />
+                  <path d="M4 20c0-2.21 3.58-4 8-4s8 1.79 8 4" fill="#163760" />
+                </svg>
+              </span>
+            </Link>
+          </>
+        ) : (
           <Link href="/login" className="hover:underline px-4">Login</Link>
-        </div>
+        )}
       </div>
       {/* Mobile menu button */}
       <div className="flex flex-col gap-1.5 md:hidden hadow-xs">

@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import QuestCard from "./quest-card";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function QuestSection() {
+  const [quests, setQuests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState({
     tipeKebutuhan: "",
@@ -9,6 +13,17 @@ export default function QuestSection() {
     tingkatKedaruratan: "",
     upah: "",
   });
+
+  useEffect(() => {
+    const fetchQuests = async () => {
+      setLoading(true);
+      const res = await fetch("/api/quests");
+      const data = await res.json();
+      setQuests(data.quests || []);
+      setLoading(false);
+    };
+    fetchQuests();
+  }, []);
 
   const dropdownData = {
     tipeKebutuhan: [
@@ -62,9 +77,18 @@ export default function QuestSection() {
   return (
     <section className="min-h-screen gap-8 flex p-12 xl:pt-48 xl:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED]">
       <div className="reveal mt-24 w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
-      <h1 className="reveal text-[#322C2C] font-bold text-5xl text-center">
-        Semua Permintaan
-      </h1>
+      <div className="flex items-center justify-center gap-4 mb-8">
+        <h1 className="reveal text-[#322C2C] font-bold text-5xl text-center m-0">
+          Permintaan Bantuan
+        </h1>
+        <button
+          onClick={() => (window.location.href = "/buat-permintaan")}
+          className="reveal bg-blue-500 hover:bg-blue-600 text-white text-base rounded-md px-4 py-2"
+          type="button"
+        >
+          Buat Permintaan
+        </button>
+      </div>
       <div className="reveal flex flex-col gap-8 p-4 rounded-lg shadow-lg justify-start items-center bg-[#CDEBF3] w-full">
         <div className="flex flex-col w-full items-center gap-8">
           <div className="flex flex-col w-full items-center gap-4">
@@ -223,12 +247,46 @@ export default function QuestSection() {
         </div>
       </div>
       <div className="grid pb-48 grid-cols-2 md:grid-cols-3 gap-4 md:gap-12">
-        <QuestCard />
-        <QuestCard />
-        <QuestCard />
-        <QuestCard />
-        <QuestCard />
-        <QuestCard />
+        {loading ? (
+          <div className="col-span-full text-center text-gray-500">
+            Loading quests...
+          </div>
+        ) : quests.length === 0 ? (
+          <div className="col-span-full text-center text-gray-500">
+            Belum ada permintaan bantuan.
+          </div>
+        ) : (
+          quests.map((quest) => (
+            <Link
+              key={quest.quest_id}
+              href={`/quest/${quest.quest_id}`}
+              className="bg-[#F8FAFA] h-[250px] md:h-[500px] w-full shadow-md rounded-2xl flex flex-col gap-1 hover:scale-105 transition-transform"
+            >
+              <div className="rounded-2xl overflow-hidden h-full md:h-[720px] w-full bg-[#93CBDC]/30 p-1 md:p-4">
+                <Image
+                  className="w-full h-full object-cover object-center rounded-2xl"
+                  src={"/images/gotong-royong-1.svg"}
+                  width={100}
+                  height={100}
+                  alt="Quest Image"
+                />
+              </div>
+              <div className="flex flex-col items-start justify-between h-full md:gap-4 p-2 md:p-4">
+                <div className="flex flex-col w-full gap-2">
+                  <h1 className="px-1 md:px-4 text-[#413939] font-bold text-md md:text-2xl text-start ">
+                    {quest.title}
+                  </h1>
+                  <h1 className="px-1 md:px-4 text-[#939393] font-bold text-xs md:text-2xl text-start ">
+                    {quest.location}
+                  </h1>
+                </div>
+                <h1 className="md:mt-8 px-1 md:px-4 text-[#0189BB] font-bold text-[80%] md:text-2xl text-start">
+                  {quest.urgency_level}
+                </h1>
+              </div>
+            </Link>
+          ))
+        )}
       </div>
     </section>
   );
