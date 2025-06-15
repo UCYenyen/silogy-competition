@@ -39,7 +39,7 @@ export default function LoginPage() {
         <Link href="/about" className="hover:underline">Home</Link>
         <Link href="/contact" className="hover:underline">Daftar Bantuan</Link>
         <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
-          <Link href="/register" className="hover:underline">Register</Link>
+          <Link href="/register" className="hover:underline px-4">Register</Link>
         </div>
       </div>
       {/* Mobile menu button */}

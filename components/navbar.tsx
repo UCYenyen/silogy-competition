@@ -106,7 +106,7 @@ export default function Navbar() {
         <Link href="/about" className="hover:underline">Home</Link>
         <Link href="/contact" className="hover:underline">Daftar Bantuan</Link>
         <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
-          <Link href="/register" className="hover:underline">Register</Link>
+          <Link href="/login" className="hover:underline px-4">Login</Link>
         </div>
       </div>
       {/* Mobile menu button */}
