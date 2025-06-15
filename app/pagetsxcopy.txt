@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import StaffList from './components/StaffList';
-import UserList from './components/UserList';
+import StaffList from '../components/StaffList';
+import UserList from '../components/UserList';
 
 
 import Navbar from '@/components/navbar';
@@ -24,4 +24,4 @@ export default function Home() {
   );
 }
 
-INI CUMA BUAT COPAS AKU KE PAGE.TSX E, ini buat nunjuin all user and staff mbe login register page
+//INI CUMA BUAT COPAS AKU KE PAGE.TSX E, ini buat nunjuin all user and staff mbe login register page

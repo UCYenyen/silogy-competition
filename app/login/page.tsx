@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' })
   const [message, setMessage] = useState<string | null>(null)
-  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -22,7 +21,7 @@ export default function LoginPage() {
     const data = await res.json()
     if (res.ok) {
       setMessage('Login successful!')
-      router.push('/dashboard')
+      window.location.href = '/dashboard' // <-- This is the fix
     } else {
       setMessage(data.error || 'Login failed')
     }
