@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { quest_id: string } }
-) {
-  const questId = params.quest_id;
+export async function GET(req: NextRequest) {
+  // Extract quest_id from the URL
+  const urlParts = req.nextUrl.pathname.split('/');
+  const questId = urlParts[urlParts.length - 1];
+
   if (!/^\d+$/.test(questId)) {
     return NextResponse.json({ error: 'Invalid quest ID' }, { status: 400 });
   }
