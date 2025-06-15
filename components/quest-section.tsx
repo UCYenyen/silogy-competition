@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
-import QuestCard from "./quest-card";
+import { useEffect, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-import Image from "next/image";
+import QuestCard from "./quest-card";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function QuestSection() {
   const [quests, setQuests] = useState<any[]>([]);
@@ -17,13 +20,43 @@ export default function QuestSection() {
   useEffect(() => {
     const fetchQuests = async () => {
       setLoading(true);
-      const res = await fetch("/api/quests");
-      const data = await res.json();
-      setQuests(data.quests || []);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/quests");
+        if (!res.ok) {
+          throw new Error("Failed to fetch quests");
+        }
+        const data = await res.json();
+        setQuests(data.quests || []);
+      } catch (err) {
+        setQuests([]);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchQuests();
   }, []);
+
+  // Jalankan animasi setiap kali quests berubah
+  useEffect(() => {
+    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play reverse play reverse",
+          },
+        }
+      );
+    });
+  }, [quests]);
 
   const dropdownData = {
     tipeKebutuhan: [
@@ -79,7 +112,7 @@ export default function QuestSection() {
       <div className="reveal mt-24 w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
       <div className="flex items-center justify-center gap-4 mb-8">
         <h1 className="reveal text-[#322C2C] font-bold text-5xl text-center m-0">
-          Permintaan Bantuan
+          Semua Permintaan
         </h1>
         <button
           onClick={() => (window.location.href = "/buat-permintaan")}
@@ -259,31 +292,16 @@ export default function QuestSection() {
           quests.map((quest) => (
             <Link
               key={quest.quest_id}
-              href={`/quest/${quest.quest_id}`}
-              className="bg-[#F8FAFA] h-[250px] md:h-[500px] w-full shadow-md rounded-2xl flex flex-col gap-1 hover:scale-105 transition-transform"
+              href={`/permintaan/${quest.quest_id}`}
+              className="block"
+              style={{ textDecoration: "none" }}
             >
-              <div className="rounded-2xl overflow-hidden h-full md:h-[720px] w-full bg-[#93CBDC]/30 p-1 md:p-4">
-                <Image
-                  className="w-full h-full object-cover object-center rounded-2xl"
-                  src={"/images/gotong-royong-1.svg"}
-                  width={100}
-                  height={100}
-                  alt="Quest Image"
-                />
-              </div>
-              <div className="flex flex-col items-start justify-between h-full md:gap-4 p-2 md:p-4">
-                <div className="flex flex-col w-full gap-2">
-                  <h1 className="px-1 md:px-4 text-[#413939] font-bold text-md md:text-2xl text-start ">
-                    {quest.title}
-                  </h1>
-                  <h1 className="px-1 md:px-4 text-[#939393] font-bold text-xs md:text-2xl text-start ">
-                    {quest.location}
-                  </h1>
-                </div>
-                <h1 className="md:mt-8 px-1 md:px-4 text-[#0189BB] font-bold text-[80%] md:text-2xl text-start">
-                  {quest.urgency_level}
-                </h1>
-              </div>
+              <QuestCard
+                title={quest.title}
+                location={quest.location}
+                urgency={quest.urgency_level}
+                imageUrl={quest.imageUrl}
+              />
             </Link>
           ))
         )}

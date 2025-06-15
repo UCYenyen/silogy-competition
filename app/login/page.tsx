@@ -4,46 +4,69 @@ import Link from "next/link";
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const loginWithRetry = async (maxRetries = 10, delayMs = 1500) => {
+    let attempt = 0;
+    while (attempt < maxRetries) {
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setMessage("Login successful!");
+          window.location.href = "/";
+          return;
+        } else if (res.status === 401) {
+          setMessage(data.error || "Login failed: Invalid credentials");
+          setLoading(false);
+          return;
+        } else {
+          // Network/server error, retry
+          setMessage("Koneksi bermasalah, mencoba lagi...");
+        }
+      } catch (err) {
+        setMessage("Koneksi bermasalah, mencoba lagi...");
+      }
+      attempt++;
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+    setMessage("Gagal login setelah beberapa percobaan. Silakan cek koneksi Anda.");
+    setLoading(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setMessage("Login successful!");
-      window.location.href = "/";
-    } else {
-      setMessage(data.error || "Login failed");
-    }
+    setLoading(true);
+    await loginWithRetry();
   };
 
   return (
     <div>
       <nav 
-      className="fixed z-[200] w-full p-6 md:p-12 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+      className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
       style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
     >
       <div className="flex items-center gap-4 shadow-xs">
         <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
       </div>
-      <div className="hidden md:flex items-center gap-4 hadow-xs">
-        <Link href="/about" className="hover:underline">Home</Link>
-        <Link href="/contact" className="hover:underline">Daftar Bantuan</Link>
+      <div className="hidden md:flex items-center gap-4 shadow-xs">
+        <Link href="/" className="hover:underline">Home</Link>
+        <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
         <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
           <Link href="/register" className="hover:underline px-4">Register</Link>
         </div>
       </div>
       {/* Mobile menu button */}
-      <div className="flex flex-col gap-1.5 md:hidden hadow-xs">
+      <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
         <div className="w-10 bg-white h-1.5"></div>
         <div className="w-10 bg-white h-1.5"></div>
       </div>
@@ -91,11 +114,14 @@ export default function LoginPage() {
               <button
                 type="submit"
                 className="px-12 bg-[#93CBDC] text-[#163760] text-xl font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
-              >
-                Masuk
+             >
+            {loading ? "Memproses..." : "Masuk"}
               </button>
             </div>
           </form>
+          {message && (
+          <div className="mt-4 text-center text-red-600">{message}</div>
+        )}
           <div className="text-center text-sm text-[#163760]">
             Belum punya akun?{" "}
             <a
