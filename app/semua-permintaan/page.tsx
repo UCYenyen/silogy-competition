@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Navbar from "@/components/navbar";
 export default function Dashboard() {
     const cards = Array(6).fill({
         title: "Bersih-bersih",
@@ -8,7 +9,8 @@ export default function Dashboard() {
     });
 
     return (
-        <div className="bg-[#EDEDED] min-h-screen py-8 px-4">
+        <div className="bg-[#EDEDED] min-h-screen">
+            <Navbar />
         <section className="min-h-screen gap-8 flex p-12 md:pt-48 md:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED] ">
             <div className="w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
             <h1 className="text-[#322C2C] font-bold text-5xl text-center ">

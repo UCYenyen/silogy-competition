@@ -103,8 +103,8 @@ export default function Navbar() {
         <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
       </div>
       <div className="hidden md:flex items-center gap-4 hadow-xs">
-        <Link href="/about" className="hover:underline">Home</Link>
-        <Link href="/contact" className="hover:underline">Permintaan</Link>
+        <Link href="/" className="hover:underline">Home</Link>
+        <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
         <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
           <Link href="/login" className="hover:underline px-4">Login</Link>
         </div>
