@@ -7,11 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Navbar() {
+interface NavbarProps {
+  enableAnimations?: boolean;
+}
+
+export default function Navbar({ enableAnimations = true }: NavbarProps) {
   const navRef = useRef<HTMLElement>(null);
   const [user, setUser] = useState<object | null>(null);
 
   useEffect(() => {
+    if (!enableAnimations) return; // Skip all animations if disabled
+    
     const navbar = navRef.current;
     if (!navbar) return;
     gsap.set(navbar, { y: 0 });
@@ -92,7 +98,7 @@ export default function Navbar() {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, []);
+  }, [enableAnimations]);
 
   useEffect(() => {
     fetch('/api/me').then(async res => {
@@ -109,7 +115,9 @@ export default function Navbar() {
     <nav 
       ref={navRef}
       className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
+      style={{ 
+        backgroundColor: enableAnimations ? "rgba(0, 0, 0, 0)" : "rgba(60, 68, 87, 1)" 
+      }}
     >
       <div className="flex items-center gap-4 shadow-xs">
         <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
@@ -132,8 +140,8 @@ export default function Navbar() {
           </>
         ) : (
          <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
-          <Link href="/login" className="hover:underline px-4">Login</Link>
-        </div>
+           <Link href="/login" className="hover:underline px-4">Login</Link>
+         </div>
         )}
       </div>
       {/* Mobile menu button */}
