@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: '', email: '', phone_number: '', password: '' })
@@ -31,6 +32,26 @@ export default function RegisterPage() {
       className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/background-home-desktop.svg')" }}
     >
+      <nav 
+      className="fixed z-[200] w-full p-6 md:p-12 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
+    >
+      <div className="flex items-center gap-4 shadow-xs">
+        <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
+      </div>
+      <div className="hidden md:flex items-center gap-4 hadow-xs">
+        <Link href="/about" className="hover:underline">Home</Link>
+        <Link href="/contact" className="hover:underline">Daftar Bantuan</Link>
+        <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
+          <Link href="/login" className="hover:underline px-4">Login</Link>
+        </div>
+      </div>
+      {/* Mobile menu button */}
+      <div className="flex flex-col gap-1.5 md:hidden hadow-xs">
+        <div className="w-10 bg-white h-1.5"></div>
+        <div className="w-10 bg-white h-1.5"></div>
+      </div>
+    </nav>
       <div className="bg-white/80 backdrop-blur-md rounded-2xl px-10 py-8 shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-bold text-[#163760] text-center mb-6">Daftar</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
