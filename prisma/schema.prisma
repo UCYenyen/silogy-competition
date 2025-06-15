@@ -44,17 +44,17 @@ model staff {
 }
 
 model quests {
-  quest_id      Int           @id @default(autoincrement())
-  requester_id  Int
-  title         String        @db.Text
-  description   String        @db.Text
-  location      String        @db.Text
-  urgency_level String        @db.Text
-  status        String        @default("Open") @db.Text
-  due_date      DateTime?     @db.Timestamp(6)
-  created_at    DateTime      @default(now()) @db.Timestamp(6)
-  
-  // Relations
+  quest_id            Int      @id @default(autoincrement())
+  requester_id        Int
+  title               String
+  description         String
+  location            String
+  urgency_level       String
+  status              String   @default("Open")
+  due_date            DateTime?
+  created_at          DateTime @default(now())
+  confirmation_status String   @default("undecided")
+
   requester     users         @relation("RequesterQuests", fields: [requester_id], references: [user_id])
   user_quests   user_quests[]
 }

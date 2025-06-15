@@ -1,4 +1,3 @@
-'use client';
 export default function LogoutButton() {
         const functionLogout = async () => {
             await fetch('api/logout', {method: 'POST'});

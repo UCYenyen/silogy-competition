@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import StaffList from '../components/StaffList';
 import UserList from '../components/UserList';
+import QuestList from '../components/questList';
+
 
 
 import Navbar from '@/components/navbar';
@@ -20,6 +22,7 @@ export default function Home() {
       </div>
         <UserList />
         <StaffList />
+        <QuestList />
     </div>
   );
 }

@@ -6,6 +6,7 @@ interface User {
   name: string
   email: string
   phone_number: string | null
+  password_hash?: string | null
 }
 
 export default function UserList() {
@@ -81,6 +82,10 @@ export default function UserList() {
                 <div>
                   <label className="text-sm font-medium text-gray-500">Phone</label>
                   <p className="text-gray-900">{user.phone_number || 'Not provided'}</p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-500">Password</label>
+                  <p className='text-gray-900'>{user.password_hash || 'gaada'}</p>
                 </div>
               </div>
             </div>
