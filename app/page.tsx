@@ -20,9 +20,9 @@ export default function Home() {
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.6,
           delay: i * 0.01,
-          ease: "power2.out",
+          ease: "power4.out",
           scrollTrigger: {
             trigger: el,
             start: "top 85%",

@@ -1,12 +1,5 @@
-"use client";
 import { useState } from "react";
 import QuestCard from "./quest-card";
-
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function QuestSection() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -66,28 +59,6 @@ export default function QuestSection() {
       selectedFilters[filterType as keyof typeof selectedFilters];
     return selected || defaultText;
   };
-
-  useEffect(() => {
-    gsap.utils.toArray<HTMLElement>(".reveal").forEach((el, i) => {
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: i * 0.01,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play reverse play reverse", // re-reveal on scroll up
-          },
-        }
-      );
-    });
-  }, []);
-
   return (
     <section className="min-h-screen gap-8 flex p-12 xl:pt-48 xl:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED]">
       <div className="reveal mt-24 w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>

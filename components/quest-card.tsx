@@ -1,32 +1,6 @@
 import Image from "next/image";
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function QuestCard(){
-    useEffect(() => {
-        gsap.utils.toArray<HTMLElement>(".reveal").forEach((el, i) => {
-            gsap.fromTo(
-                el,
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    delay: i * 0.01,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: el,
-                        start: "top 85%",
-                        toggleActions: "play reverse play reverse", // re-reveal on scroll up
-                    },
-                }
-            );
-        });
-    }, []);
-
     return (
         <div className="reveal bg-[#F8FAFA] h-[250px] md:h-[500px] w-full shadow-md rounded-2xl flex flex-col gap-1">
             <div className="rounded-2xl overflow-hidden h-full md:h-[720px] w-full bg-[#93CBDC]/30 p-1 md:p-4">
