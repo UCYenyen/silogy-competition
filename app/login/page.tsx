@@ -1,13 +1,6 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -23,20 +16,19 @@ export default function LoginPage() {
     setMessage(null);
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
     });
 
-    if (error) {
-      setMessage("Login gagal. Silakan cek email dan password Anda.");
+    const data = await res.json();
+    if (res.ok) {
+      window.location.href = "/";
+    } else {
+      setMessage(data.error || "Login gagal");
       setLoading(false);
-      return;
     }
-
-    setMessage("Login berhasil!");
-    // Redirect or reload as needed
-    window.location.href = "/";
   };
 
   return (

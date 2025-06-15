@@ -3,13 +3,31 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const [user, setUser] = useState<object | null>(null);
+   const supabase = createClientComponentClient();
+  
+  useEffect(() => {
+    async function getUser() {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser({
+          id: user?.id,
+          name: user?.user_metadata?.name || "User",
+          email: user?.email
+        });
+      }
+    }
+    
+    getUser();
+  }, [supabase]);
 
   useEffect(() => {
     const navbar = navRef.current;
@@ -94,17 +112,6 @@ export default function Navbar() {
     };
   }, []);
 
-  useEffect(() => {
-    fetch('/api/me').then(async res => {
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    });
-  }, []);
-
   return (
     <nav 
       ref={navRef}
@@ -119,7 +126,7 @@ export default function Navbar() {
         {user ? (
           <>
             <Link
-              href="/dashboard"
+              href="/user-dashboard"
               className="flex items-center justify-center px-2 py-1 rounded-full hover:bg-gray-200 transition min-w-10 min-h-10"
             >
               <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-300">
