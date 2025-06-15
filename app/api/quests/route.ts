@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
-import { prisma } from '../../lib/prisma'
+import { prisma } from '../../lib/prisma.ts'
 
 // Helper to check if user is admin staff
 async function isAdmin(user_id: number) {
