@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/caveat": "^5.2.6",
+    "@fontsource/inter": "^5.2.6",
     "@prisma/client": "^6.9.0",
     "@supabase/supabase-js": "^2.50.0",
     "gsap": "^3.13.0",

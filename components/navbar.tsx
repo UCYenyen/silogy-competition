@@ -96,7 +96,7 @@ export default function Navbar() {
   return (
     <nav 
       ref={navRef}
-      className="fixed z-[200] w-full p-6 md:p-12 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+      className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
       style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
     >
       <div className="flex items-center gap-4 shadow-xs">
@@ -104,7 +104,7 @@ export default function Navbar() {
       </div>
       <div className="hidden md:flex items-center gap-4 hadow-xs">
         <Link href="/about" className="hover:underline">Home</Link>
-        <Link href="/contact" className="hover:underline">Daftar Bantuan</Link>
+        <Link href="/contact" className="hover:underline">Permintaan</Link>
         <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
           <Link href="/login" className="hover:underline px-4">Login</Link>
         </div>

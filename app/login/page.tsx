@@ -29,7 +29,7 @@ export default function LoginPage() {
   return (
     <div>
       <nav 
-      className="fixed z-[200] w-full p-6 md:p-12 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+      className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
       style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
     >
       <div className="flex items-center gap-4 shadow-xs">

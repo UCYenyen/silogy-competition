@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Caveat, Roboto } from "next/font/google"; // Choose your preferred font
+import { Inter, Caveat } from "next/font/google"; // Choose your preferred font
 import "./globals.css";
 
 // Configure your custom font

@@ -29,8 +29,8 @@ export default function Footer(){
     return(
         <div className="bg-[#93CBDC] px-12 md:px-24 w-full min-h-[25vh] flex justify-between items-center gap-4">
             <div className="flex flex-col gap-4 text-[#322C2C]">
-                <h1 className="reveal font-heading text-4xl sm:text-6xl md:text-8xl font-semibold">TolongYuk!</h1>
-                <h1 className="reveal text-xs sm:text-lg md:text-xl w-[80%] font-semibold">© 2025 TolongYuk by Rebet. All Rights Reserved.</h1>
+                <h1 className="footer-reveal font-heading text-4xl sm:text-6xl md:text-8xl font-semibold">TolongYuk!</h1>
+                <h1 className="footer-reveal text-xs sm:text-lg md:text-xl w-[80%] font-semibold">© 2025 TolongYuk by Rebet. All Rights Reserved.</h1>
             </div>
             <div className="flex gap-8">
                 <div className="flex flex-col gap-4">
