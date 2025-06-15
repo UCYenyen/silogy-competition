@@ -29,7 +29,7 @@ export default function RegisterPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+      className="min-h-screen flex-col items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/background-home-desktop.svg')" }}
     >
       <nav 
@@ -47,69 +47,98 @@ export default function RegisterPage() {
         </div>
       </div>
       {/* Mobile menu button */}
-      <div className="flex flex-col gap-1.5 md:hidden hadow-xs">
+      <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
         <div className="w-10 bg-white h-1.5"></div>
         <div className="w-10 bg-white h-1.5"></div>
       </div>
     </nav>
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl px-10 py-8 shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold text-[#163760] text-center mb-6">Daftar</h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-[#163760] font-semibold mb-1">Nama</label>
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              placeholder="Masukkan nama lengkap"
-              className="w-full border-0 border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-50 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
-            />
+      <div
+        className="min-h-screen flex items-center justify-center bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/images/background-home-no-noise.svg')",
+        }}
+      >
+        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-10 py-16 shadow-lg w-full justify-between max-w-[40rem]">
+          <h1 className="text-3xl font-bold text-[#163760] text-center mb-12">
+            Masuk
+          </h1>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-[#163760] font-semibold mb-1">
+                Nama
+              </label>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                placeholder="Masukkan email"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+              />
+            </div>
+            <div>
+              <label className="block text-[#163760] font-semibold mb-1">
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                placeholder="Masukkan password"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+              />
+            </div>
+            <div>
+              <label className="block text-[#163760] font-semibold mb-1">
+                Nomor Telepon
+              </label>
+              <input
+                name="phone_number"
+                value={form.phone_number}
+                onChange={handleChange}
+                required
+                placeholder="Masukkan Nomor Telepon"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+              />
+            </div>
+            <div>
+              <label className="block text-[#163760] font-semibold mb-1">
+                Kata Sandi
+              </label>
+              <input
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                placeholder="Masukkan Kata Sandi"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+              />
+            </div>
+
+            <div className="flex justify-center mt-12">
+              <button
+                type="submit"
+                className="px-12 bg-[#93CBDC] text-[#163760] text-xl font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
+              >
+                Daftar
+              </button>
+            </div>
+          </form>
+          <div className="text-center text-sm text-[#163760]">
+            Sudah punya akun?{" "}
+            <a
+              href="/login"
+              className="font-semibold text-[#163760] underline hover:text-[#0f2f5c]"
+            >
+              Masuk
+            </a>
           </div>
-          <div>
-            <label className="block text-[#163760] font-semibold mb-1">Email</label>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              placeholder="Masukkan email"
-              className="w-full border-0 border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-50 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
-            />
-          </div>
-          <div>
-            <label className="block text-[#163760] font-semibold mb-1">Nomor Telepon</label>
-            <input
-              name="phone_number"
-              value={form.phone_number}
-              onChange={handleChange}
-              placeholder="Masukkan nomor telepon"
-              className="w-full border-0 border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-50 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
-            />
-          </div>
-          <div>
-            <label className="block text-[#163760] font-semibold mb-1">Kata Sandi</label>
-            <input
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              placeholder="Masukkan kata sandi"
-              className="w-full border-0 border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-50 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-[#93CBDC] text-[#163760] font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
-          >
-            Daftar
-          </button>
-        </form>
-        {message && (
-          <div className="mt-4 text-center text-red-600 font-medium">{message}</div>
-        )}
+          {message && (
+            <div className="mt-4 text-center text-red-600">{message}</div>
+          )}
+        </div>
       </div>
     </div>
   )
