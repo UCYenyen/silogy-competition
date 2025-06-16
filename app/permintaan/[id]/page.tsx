@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Navbar from "@/components/no-animation-navbar";
 import supabase from "@/lib/db";
+import Link from "next/link";
 
 export default async function PermintaanDetailPage({
   params,
@@ -48,7 +49,7 @@ export default async function PermintaanDetailPage({
             <div className="mb-2">No. Telepon: {pembuat.no_telpon}</div>
             </div>
             <div className="flex gap-2">
-              <div className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl">Edit</div>
+              <Link href="/edit-permintaan" className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl">Edit</Link>
               <div className="p-2 px-8 text-2xl text-white bg-green-400 text-center rounded-2xl">Selesai</div>
             </div>
         </div>
