@@ -17,7 +17,7 @@ export default async function PermintaanDetailPage({
     .eq("id", id)
     .single();
 
-  const {data: pembuat, error: pembuatError} = await supabase
+  const {data: pembuat} = await supabase
     .from("users")
     .select(`*`)
     .eq("id", quest?.pembuat_id)
