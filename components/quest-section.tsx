@@ -288,7 +288,7 @@ export default function QuestSection() {
           quests.map((quest) => (
             <Link
               key={quest.id}
-              href={`/permintaan/${quest.id}`}
+              href={'/permintaan/' + quest.id}
               className="block w-full h-full"
               style={{ textDecoration: "none" }}
             >
