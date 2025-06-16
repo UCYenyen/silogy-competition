@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface QuestCardProps {
   nama_permintaan: string;
   lokasi_permintaan: string;

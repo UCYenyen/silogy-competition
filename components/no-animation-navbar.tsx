@@ -1,22 +1,24 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { IUser } from "@/types/user.md";
 import LogoutButton from "./logoutButton";
 import { useEffect, useState } from "react";
-export default function noAnimationNavbar() {
+
+export default function NoAnimationNavbar() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
-  
-    useEffect(() => {
-      const user = localStorage.getItem("loggedInUser");
-      if (user) {
-        setLoggedInUser(JSON.parse(user));
-      }
-    }, []);
-    
-      const toggleDropdown = () => {
+  const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem("loggedInUser");
+    if (user) {
+      setLoggedInUser(JSON.parse(user));
+    }
+  }, []);
+
+  const toggleDropdown = () => {
     setDropdownVisible((prev) => !prev);
   };
+
   return (
     <nav
       className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
@@ -46,20 +48,13 @@ export default function noAnimationNavbar() {
             </div>
             {dropdownVisible && (
               <div
-                className="absolute flex flex-col items-center justify-start right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50"
+                className="absolute flex flex-col items-center justify-center right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50"
                 tabIndex={0}
                 onBlur={() => setDropdownVisible(false)}
               >
-                <p className="px-4 text-black">
+                <p className="px-4 py-2 text-gray-700">
                   Halo, {loggedInUser?.username || "Pengguna"}
                 </p>
-                <hr className="my-2" />
-                <Link
-                  href="/user-dashboard"
-                  className="px-4 text-black text-center hover:bg-gray-100 w-full"
-                >
-                  Dashboard
-                </Link>
                 <hr className="my-2" />
                 <LogoutButton />
               </div>
