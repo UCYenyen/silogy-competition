@@ -90,7 +90,7 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
             TolongYuk!
           </Link>
         </div>
-        <div className="hidden md:flex items-center gap-4 shadow-xs">
+        <div className="flex items-center gap-4 shadow-xs">
           {loggedInUser ? (
             <div className="relative">
               <div
@@ -128,11 +128,6 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
               </Link>
             </div>
           )}
-        </div>
-        {/* Mobile menu button */}
-        <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
-          <div className="w-10 bg-white h-1.5"></div>
-          <div className="w-10 bg-white h-1.5"></div>
         </div>
       </nav>
       <div
