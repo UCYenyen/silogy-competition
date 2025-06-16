@@ -1,4 +1,3 @@
-import Link from "next/link";
 interface QuestCardProps {
   id: string;
   nama_permintaan: string;
