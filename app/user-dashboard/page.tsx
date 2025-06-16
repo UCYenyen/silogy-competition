@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Footer from "@/components/footer";
 import { IUser } from "@/types/user.md";
 import Navbar from "@/components/navbar";
+import LoadingOverlay from "@/components/loading-overlay";
 // Register ScrollTrigger plugin
 export default function UserDashboardPage() {
   const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
@@ -14,10 +15,21 @@ export default function UserDashboardPage() {
     }
   }, []);
 
+  const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      // Simulasikan proses loading
+      const timer = setTimeout(() => {
+        setIsLoading(false); // Sembunyikan overlay setelah halaman selesai dimuat
+      }, 2000); // Ganti dengan durasi loading yang sesuai
+  
+      return () => clearTimeout(timer); // Bersihkan timer saat komponen di-unmount
+    }, []);
+
   return (
     <div className="bg-[#EDEDED] min-h-screen">
       <Navbar/>
-
+      <LoadingOverlay isVisible={isLoading} />
       <section className="min-h-screen gap-8 flex p-4 md:pt-48 md:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED] ">
         <div className="w-32 md:w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
         <h1 className="text-[#322C2C] font-bold mt-24 md:mt-0 text-5xl md:text-5xl text-center ">
