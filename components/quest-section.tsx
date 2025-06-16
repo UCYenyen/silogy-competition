@@ -3,11 +3,12 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import QuestCard from "./quest-card";
+import supabase from "@/lib/db";
+import { IPermintaan } from "@/types/permintaan.md";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function QuestSection() {
-  const [quests, setQuests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -17,29 +18,27 @@ export default function QuestSection() {
     upah: "",
   });
 
+  const [quests, setQuests] = useState<IPermintaan[]>([]);
+
   useEffect(() => {
     const fetchQuests = async () => {
       setLoading(true);
-      try {
-        const res = await fetch("/api/quests");
-        if (!res.ok) {
-          throw new Error("Failed to fetch quests");
-        }
-        const data = await res.json();
-        setQuests(data.quests || []);
-      } catch (err) {
+      const { data: permintaan, error } = await supabase
+        .from("permintaan")
+        .select("*");
+      if (!error && permintaan) {
+        setQuests(permintaan as IPermintaan[]);
+      } else {
         setQuests([]);
-        console.error(err);
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
     fetchQuests();
   }, []);
 
   // Jalankan animasi setiap kali quests berubah
   useEffect(() => {
-    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el) => {
+    gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
       gsap.fromTo(
         el,
         { opacity: 0, y: 40 },
@@ -60,14 +59,16 @@ export default function QuestSection() {
 
   const dropdownData = {
     tipeKebutuhan: [
+      "None",
       "Pembersihan Lingkungan",
-      "Perbaikan Infrastruktur",
+      "Perbaikan",
       "Bantuan Sosial",
-      "Gotong Royong",
       "Keamanan Lingkungan",
       "Kegiatan Komunitas",
+      "Lainnya",
     ],
     lokasi: [
+      "None",
       "Surabaya Pusat",
       "Surabaya Utara",
       "Surabaya Selatan",
@@ -76,18 +77,13 @@ export default function QuestSection() {
       "Semua Wilayah",
     ],
     tingkatKedaruratan: [
+      "None",
       "Sangat Mendesak",
       "Mendesak",
       "Normal",
       "Tidak Mendesak",
     ],
-    upah: [
-      "Gratis (Volunteer)",
-      "< Rp 50.000",
-      "Rp 50.000 - Rp 100.000",
-      "Rp 100.000 - Rp 200.000",
-      "> Rp 200.000",
-    ],
+    upah: ["None", "Gratis (Volunteer)", "< Rp 50.000", "> Rp.100.000"],
   };
 
   const toggleDropdown = (dropdownName: string) => {
@@ -110,7 +106,7 @@ export default function QuestSection() {
   return (
     <section className="min-h-screen gap-8 flex p-12 xl:pt-48 xl:px-24 flex-col items-center md:items-start md:justify-start bg-[#EDEDED]">
       <div className="reveal mt-24 w-50 z-[150] h-1 bg-gradient-to-l from-[#0189BB] to-transparent"></div>
-      <div className="flex items-center justify-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-4">
         <h1 className="reveal text-[#322C2C] font-bold text-5xl text-center m-0">
           Semua Permintaan
         </h1>
@@ -153,10 +149,10 @@ export default function QuestSection() {
             {/* Dropdown Filters */}
             <div className="flex flex-col md:flex-row w-full gap-2 mt-4 bg-[#F8FAFA] relative">
               {/* Tipe Kebutuhan Dropdown */}
-              <div className="flex-1 relative">
+              <div className="flex-1 relativexl">
                 <button
                   onClick={() => toggleDropdown("tipeKebutuhan")}
-                  className="w-full bg-white p-4 font-bold text-lg flex items-center justify-between gap-2 shadow hover:bg-gray-50"
+                  className="w-full bg-white p-4 font-bold text-xs md:text-lg flex items-center justify-between gap-2 shadow hover:bg-gray-50"
                 >
                   {getDisplayText("tipeKebutuhan", "Tipe kebutuhan")}
                   <span
@@ -173,7 +169,7 @@ export default function QuestSection() {
                       <button
                         key={index}
                         onClick={() => selectOption("tipeKebutuhan", option)}
-                        className="w-full p-3 text-left hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
+                        className="w-full p-3 text-left text-xs md:text-lg  hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
                       >
                         {option}
                       </button>
@@ -186,7 +182,7 @@ export default function QuestSection() {
               <div className="flex-1 relative">
                 <button
                   onClick={() => toggleDropdown("lokasi")}
-                  className="w-full bg-white p-4 font-bold text-lg flex items-center justify-between gap-2 shadow hover:bg-gray-50"
+                  className="w-full bg-white text-xs md:text-lg p-4 font-bold flex items-center justify-between gap-2 shadow hover:bg-gray-50"
                 >
                   {getDisplayText("lokasi", "Lokasi")}
                   <span
@@ -203,7 +199,7 @@ export default function QuestSection() {
                       <button
                         key={index}
                         onClick={() => selectOption("lokasi", option)}
-                        className="w-full p-3 text-left hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
+                        className="w-full p-3 text-left hover:bg-blue-50 text-xs md:text-lg  border-b border-gray-100 last:border-b-0"
                       >
                         {option}
                       </button>
@@ -216,7 +212,7 @@ export default function QuestSection() {
               <div className="flex-1 relative">
                 <button
                   onClick={() => toggleDropdown("tingkatKedaruratan")}
-                  className="w-full bg-white p-4 font-bold text-lg flex items-center justify-between gap-2 shadow hover:bg-gray-50"
+                  className="w-full bg-white p-4 font-bold text-xs md:text-lg flex items-center justify-between gap-2 shadow hover:bg-gray-50"
                 >
                   {getDisplayText("tingkatKedaruratan", "Tingkat Kedaruratan")}
                   <span
@@ -237,7 +233,7 @@ export default function QuestSection() {
                         onClick={() =>
                           selectOption("tingkatKedaruratan", option)
                         }
-                        className="w-full p-3 text-left hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
+                        className="w-full p-3 text-left hover:bg-blue-50 text-xs md:text-lg border-b border-gray-100 last:border-b-0"
                       >
                         {option}
                       </button>
@@ -250,7 +246,7 @@ export default function QuestSection() {
               <div className="flex-1 relative">
                 <button
                   onClick={() => toggleDropdown("upah")}
-                  className="w-full bg-white p-4 font-bold text-lg flex items-center justify-between gap-2 shadow hover:bg-gray-50"
+                  className="w-full bg-white p-4 font-bold text-xs md:text-lg  flex items-center justify-between gap-2 shadow hover:bg-gray-50"
                 >
                   {getDisplayText("upah", "Upah")}
                   <span
@@ -267,7 +263,7 @@ export default function QuestSection() {
                       <button
                         key={index}
                         onClick={() => selectOption("upah", option)}
-                        className="w-full p-3 text-left hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
+                        className="w-full  p-3 text-left text-xs md:text-lg  hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
                       >
                         {option}
                       </button>
@@ -279,10 +275,10 @@ export default function QuestSection() {
           </div>
         </div>
       </div>
-      <div className="grid pb-48 grid-cols-2 md:grid-cols-3 gap-4 md:gap-12">
+      <div className="grid pb-48 grid-cols-1 gap-4 md:gap-12 w-full">
         {loading ? (
           <div className="col-span-full text-center text-gray-500">
-            Loading quests...
+            Loading permintaan...
           </div>
         ) : quests.length === 0 ? (
           <div className="col-span-full text-center text-gray-500">
@@ -291,16 +287,16 @@ export default function QuestSection() {
         ) : (
           quests.map((quest) => (
             <Link
-              key={quest.quest_id}
-              href={`/permintaan/${quest.quest_id}`}
-              className="block"
+              key={quest.id}
+              href={`/permintaan/${quest.id}`}
+              className="block w-full h-full"
               style={{ textDecoration: "none" }}
             >
               <QuestCard
-                title={quest.title}
-                location={quest.location}
-                urgency={quest.urgency_level}
-                imageUrl={quest.imageUrl}
+                nama_permintaan={quest.nama_permintaan}
+                lokasi_permintaan={quest.lokasi_permintaan}
+                tingkat_kedaruratan={quest.tingkat_kedaruratan}
+                upah={quest.upah_permintaan}
               />
             </Link>
           ))

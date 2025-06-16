@@ -1,68 +1,70 @@
-'use client'
-import { useState } from 'react'
-import Link from 'next/link'
-import { createClient } from '@supabase/supabase-js'
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+"use client";
+import supabase from "@/lib/db";
+import { useState } from "react";
+import Link from "next/link";
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: '', email: '', phone_number: '', password: '' })
-  const [message, setMessage] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone_number: "",
+    password: "",
+  });
 
+  const [loading, setLoading] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setMessage(null)
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     // Register user with Supabase
-    const { data, error } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        data: {
-          name: form.name,
-          phone_number: form.phone_number,
+    const { error } = await supabase
+      .from("users")
+      .insert([
+        {
+          username: form.name,
+          password: form.password,
+          email: form.email,
+          no_telpon: form.phone_number,
+          created_at: new Date().toISOString(),
         },
-      },
-    })
+      ])
+      .select();
 
     if (error) {
-      setMessage(error.message || 'Registration failed')
-      setLoading(false)
-      return
+      console.error("Error registering user:", error);
+      setLoading(false);
+      return;
     }
-
-    setMessage('Registration successful! Please check your email to verify your account.')
-    setForm({ name: '', email: '', phone_number: '', password: '' })
-    setLoading(false)
-  }
+    window.location.href = "/";
+    setLoading(false);
+  };
 
   return (
     <div
       className="min-h-screen flex-col items-center justify-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/images/background-home-desktop.svg')" }}
     >
-      <nav 
+      <nav
         className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
         style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
       >
         <div className="flex items-center gap-4 shadow-xs">
-          <Link href="/" className="font-heading text-4xl">TolongYuk!</Link>
+          <Link href="/" className="font-heading text-4xl">
+            TolongYuk!
+          </Link>
         </div>
         <div className="hidden md:flex items-center gap-4 shadow-xs">
-          <Link href="/" className="hover:underline">Home</Link>
-          <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>
           <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
-            <Link href="/login" className="hover:underline px-4">Login</Link>
+            <Link href="/login" className="hover:underline px-4">
+              Login
+            </Link>
           </div>
         </div>
         {/* Mobile menu button */}
@@ -155,11 +157,8 @@ export default function RegisterPage() {
               Masuk
             </a>
           </div>
-          {message && (
-            <div className="mt-4 text-center text-red-600">{message}</div>
-          )}
         </div>
       </div>
     </div>
-  )
+  );
 }

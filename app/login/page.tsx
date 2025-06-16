@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import supabase from "@/lib/db";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState<string | null>(null);
+  const [message] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,22 +14,29 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage(null);
     setLoading(true);
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    // Fetch user by username
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", form.email)
+      .single();
 
-    const data = await res.json();
-    if (res.ok) {
-      window.location.href = "/";
-    } else {
-      setMessage(data.error || "Login gagal");
+    if (error || !user || user.password !== form.password) {
+      alert("Invalid username or password");
       setLoading(false);
+      return;
     }
+
+    // Save the logged-in user to local storage
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    console.log("User ID:", user.id);
+
+    // Redirect to the home page
+    window.location.href = "/";
+    console.log("User logged in successfully:", user.username);
+    setLoading(false);
   };
 
   return (
@@ -42,7 +50,6 @@ export default function LoginPage() {
         </div>
         <div className="hidden md:flex items-center gap-4 shadow-xs">
           <Link href="/" className="hover:underline">Home</Link>
-          <Link href="/semua-permintaan" className="hover:underline">Permintaan</Link>
           <div className="bg-[#FAFAFA] p-2 rounded-lg text-[#413939]">
             <Link href="/register" className="hover:underline px-4">Register</Link>
           </div>
