@@ -24,12 +24,28 @@ export default async function PermintaanDetailPage({
   return (
     <div>
       <Navbar />
-      <div className="max-w-xl mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-4">{quest.nama_permintaan}</h1>
-        <div className="mb-2">Deskripsi: {quest.deskripsi_permintaan}</div>
-        <div className="mb-2">Lokasi: {quest.lokasi_permintaan}</div>
-        <div className="mb-2">Urgensi: {quest.tingkat_kedaruratan}</div>
-        <div className="mb-2">Upah: {quest.upah_permintaan}</div>
+      <div className="min-w-screen min-h-screen max-w-screen mx-auto p-8">
+        <div className="flex flex-col gap-8 p-12 rounded-lg justify-start items-center w-full"></div>
+
+        <h1 className="text-3xl font-bold mb-4">Detail Permintaan</h1>
+        <div className="flex flex-col gap-8 p-12 rounded-lg shadow-lg justify-start items-start bg-[#CDEBF3] w-full">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-3xl font-bold mb-4">{quest.nama_permintaan}</h1>
+            <div className="mb-2">Tingkat kedaruratan: <span className="font-bold">{quest.tingkat_kedaruratan}</span></div>
+            <div className="mb-2">Upah: <span className="font-bold">Rp.{quest.upah_permintaan}</span></div>
+            <div className="mb-2">Lokasi: {quest.lokasi_permintaan}</div>
+            <div className="mb-2">Deskripsi: <br className="mb-4"></br>{quest.deskripsi_permintaan}</div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl font-bold mb-4">Kontak</h2>
+            <div className="mb-2">Nama: {quest.nama_peminta}</div>
+            <div className="mb-2">No. Telepon: {quest.no_telpon_peminta}</div>
+            <div className="mb-2">Email: {quest.email_peminta}</div>
+            <div className="mb-2">Alamat: {quest.alamat_peminta}</div>
+            </div>
+          
+          
+        </div>
       </div>
     </div>
   );
