@@ -293,6 +293,7 @@ export default function QuestSection() {
               style={{ textDecoration: "none" }}
             >
               <QuestCard
+                id={quest.id}
                 nama_permintaan={quest.nama_permintaan}
                 lokasi_permintaan={quest.lokasi_permintaan}
                 tingkat_kedaruratan={quest.tingkat_kedaruratan}

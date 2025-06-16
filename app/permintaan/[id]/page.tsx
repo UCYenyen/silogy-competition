@@ -2,12 +2,19 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/no-animation-navbar";
 import supabase from "@/lib/db";
 
-export default async function PermintaanDetailPage({ params }: { params: { id: string } }) {
+export default async function PermintaanDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  // Await the params object
+  const { id } = await params;
+
   // Fetch specific permintaan data by id
   const { data: quest, error } = await supabase
     .from("permintaan")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (!quest || error) {

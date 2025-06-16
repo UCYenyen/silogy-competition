@@ -1,5 +1,5 @@
 interface QuestCardProps {
-  id: string;
+  id: number;
   nama_permintaan: string;
   lokasi_permintaan: string;
   tingkat_kedaruratan: string;
