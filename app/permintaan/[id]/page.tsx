@@ -47,9 +47,12 @@ export default async function PermintaanDetailPage({
             <div className="mb-2">Nama: {pembuat.username}</div>
             <div className="mb-2">No. Telepon: {pembuat.no_telpon}</div>
             </div>
-          
-          
+            <div className="flex gap-2">
+              <div className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl">Edit</div>
+              <div className="p-2 px-8 text-2xl text-white bg-green-400 text-center rounded-2xl">Selesai</div>
+            </div>
         </div>
+        
       </div>
     </div>
   );
