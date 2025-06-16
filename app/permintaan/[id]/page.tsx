@@ -13,9 +13,15 @@ export default async function PermintaanDetailPage({
   // Fetch specific permintaan data by id
   const { data: quest, error } = await supabase
     .from("permintaan")
-    .select("*")
+    .select(`*`)
     .eq("id", id)
     .single();
+
+  const {data: pembuat, error: pembuatError} = await supabase
+    .from("users")
+    .select(`*`)
+    .eq("id", quest?.pembuat_id)
+    .single(); 
 
   if (!quest || error) {
     notFound();
@@ -38,10 +44,8 @@ export default async function PermintaanDetailPage({
           </div>
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-bold mb-4">Kontak</h2>
-            <div className="mb-2">Nama: {quest.nama_peminta}</div>
-            <div className="mb-2">No. Telepon: {quest.no_telpon_peminta}</div>
-            <div className="mb-2">Email: {quest.email_peminta}</div>
-            <div className="mb-2">Alamat: {quest.alamat_peminta}</div>
+            <div className="mb-2">Nama: {pembuat.username}</div>
+            <div className="mb-2">No. Telepon: {pembuat.no_telpon}</div>
             </div>
           
           
