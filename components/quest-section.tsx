@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import QuestCard from "./quest-card";
 import LoadingOverlay from "@/components/loading-overlay";
 import supabase from "@/lib/db";
