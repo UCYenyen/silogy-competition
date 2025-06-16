@@ -3,6 +3,7 @@ import Link from "next/link";
 import supabase from "@/lib/db";
 import { useState, useEffect } from "react";
 import { IUser } from "@/types/user.md";
+import LogoutButton from "@/components/logoutButton";
 
 export default function AskHelpForm() {
   const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
