@@ -30,7 +30,7 @@ export default function UserDashboardPage() {
       if (!loggedInUser?.id) return;
       
       setLoading(true);
-      let { data: permintaan, error } = await supabase
+      const { data: permintaan, error } = await supabase
         .from('permintaan')
         .select('*')
         .eq('pembuat_id', loggedInUser.id);
@@ -55,7 +55,7 @@ export default function UserDashboardPage() {
       setTakenQuestsLoading(true);
       
       
-      let { data: users_permintaan, error } = await supabase
+      const { data: users_permintaan, error } = await supabase
         .from('users_permintaan')
         .select('*')
         .eq('calon_penerima_id', loggedInUser.id);
@@ -91,8 +91,6 @@ export default function UserDashboardPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  var questAmount = permintaan.length
-  var takenQuestAmount = takenQuests.length
   // ini blm pasti tpi nek mau bisa buat ngitung user e ada brp quest and ngambil brp gitu
 
   return (
