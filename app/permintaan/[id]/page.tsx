@@ -40,7 +40,7 @@ export default async function PermintaanDetailPage({
 
         <div className="flex flex-col gap-8 p-12 rounded-lg shadow-lg justify-start items-start bg-[#CDEBF3] w-full">
           <div className="flex flex-col gap-2 w-full">
-            <div className="flex gap-2 items-center justify-between w-full">
+            <div className="flex flex-col pb-4 md:flex-row gap-2 md:items-center justify-between w-full">
             <h1 className="text-3xl font-bold mb-4">{quest.nama_permintaan}</h1>
               <DetailButtonPermintaan
                 questId={quest.id}
