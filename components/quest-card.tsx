@@ -13,17 +13,24 @@ export default function QuestCard({
   upah,
 }: QuestCardProps) {
   return (
-    <div className="flex items-center justify-between bg-white shadow-xl p-4 border-1 border-white rounded-2xl w-full min-h-[10rem]">
-      <div className="flex flex-col gap-4 max-w-[60%]">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">{nama_permintaan}</h1>
-          <p className="text-md px-4 font-bold text-red-500 bg-gray-400/30 rounded-lg ">
-          {tingkat_kedaruratan}
-        </p>
+    <div className="flex flex-col bg-white shadow-xl p-4 md:p-6 border border-white rounded-2xl w-full min-h-[120px] md:min-h-[140px] gap-3 md:gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 w-full">
+        <h1 className="text-base md:text-xl lg:text-2xl font-bold text-gray-900 break-words flex-1 leading-tight">
+          {nama_permintaan}
+        </h1>
+        <div className="flex-shrink-0">
+          <span className="inline-block text-xs md:text-sm px-2 py-1 font-bold text-red-500 bg-gray-200 rounded-lg whitespace-nowrap">
+            {tingkat_kedaruratan}
+          </span>
         </div>
-        <p className="text-xl font-semibold">{lokasi_permintaan}</p>
-        <p className="text-xl font-bold text-green-600">Upah : Rp.{upah}</p>
       </div>
+      <p className="text-sm md:text-lg font-semibold text-gray-600 break-words leading-tight">{lokasi_permintaan}</p>
+      <p className="text-sm md:text-lg font-bold text-green-600 mt-auto">
+        Upah:{" "}
+        <span className="text-xs md:text-base">
+          Rp.{upah.toLocaleString("id-ID")}
+        </span>
+      </p>
     </div>
   );
 }

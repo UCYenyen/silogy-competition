@@ -135,7 +135,7 @@ export default function QuestSection() {
         >
           Buat Permintaan
         </button>
-      </div>
+      </div>  
       <div className="reveal flex flex-col gap-8 p-4 rounded-lg shadow-lg justify-start items-center bg-[#CDEBF3] w-full">
         <div className="flex flex-col w-full items-center gap-8">
           <div className="flex flex-col w-full items-center gap-4">
@@ -197,7 +197,7 @@ export default function QuestSection() {
               </div>
 
               {/* Lokasi Dropdown */}
-              <div className="flex-1 relative">
+              <div className="flex-1 relative h-full">
                 <button
                   onClick={() => toggleDropdown("lokasi")}
                   className="w-full bg-white text-xs md:text-lg p-4 font-bold flex items-center justify-between gap-2 shadow hover:bg-gray-50"
@@ -293,7 +293,7 @@ export default function QuestSection() {
           </div>
         </div>
       </div>
-      <div className="grid pb-48 grid-cols-1 gap-4 md:gap-12 w-full">
+      <div className="grid pb-48 grid-cols-1 gap-4 md:gap-6 w-full">
         {loading ? (
           <div className="col-span-full text-center text-gray-500">
             Loading permintaan...

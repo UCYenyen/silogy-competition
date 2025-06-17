@@ -74,18 +74,18 @@ export default function RegisterPage() {
         </div>
       </nav>
       <div
-        className="min-h-screen flex items-center justify-center bg-cover bg-center"
+        className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6"
         style={{
           backgroundImage: "url('/images/background-home-no-noise.svg')",
         }}
       >
-        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-10 py-16 shadow-lg w-full justify-between max-w-[40rem]">
-          <h1 className="text-3xl font-bold text-[#163760] text-center mb-12">
+        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-4 sm:px-6 md:px-10 py-8 md:py-16 shadow-lg w-full max-w-[90vw] sm:max-w-[28rem] md:max-w-[40rem]">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#163760] text-center mb-6 md:mb-12">
             Daftar
           </h1>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
             <div>
-              <label className="block text-[#163760] font-semibold mb-1">
+              <label className="block text-[#163760] font-semibold mb-1 text-sm md:text-base">
                 Nama
               </label>
               <input
@@ -94,11 +94,11 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 placeholder="Masukkan Nama"
-                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2 text-sm md:text-base"
               />
             </div>
             <div>
-              <label className="block text-[#163760] font-semibold mb-1">
+              <label className="block text-[#163760] font-semibold mb-1 text-sm md:text-base">
                 Email
               </label>
               <input
@@ -108,11 +108,11 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 placeholder="Masukkan Email"
-                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2 text-sm md:text-base"
               />
             </div>
             <div>
-              <label className="block text-[#163760] font-semibold mb-1">
+              <label className="block text-[#163760] font-semibold mb-1 text-sm md:text-base">
                 Nomor Telepon
               </label>
               <input
@@ -121,11 +121,11 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 placeholder="Masukkan Nomor Telepon"
-                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2 text-sm md:text-base"
               />
             </div>
             <div>
-              <label className="block text-[#163760] font-semibold mb-1">
+              <label className="block text-[#163760] font-semibold mb-1 text-sm md:text-base">
                 Kata Sandi
               </label>
               <input
@@ -135,20 +135,20 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
                 placeholder="Masukkan Kata Sandi"
-                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
+                className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2 text-sm md:text-base"
               />
             </div>
-            <div className="flex justify-center mt-12">
+            <div className="flex justify-center mt-8 md:mt-12">
               <button
                 type="submit"
-                className="px-12 bg-[#93CBDC] text-[#163760] text-xl font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
+                className="px-6 md:px-12 bg-[#93CBDC] text-[#163760] text-lg md:text-xl font-semibold py-2 rounded-full shadow hover:bg-[#7fbccf] transition-colors"
                 disabled={loading}
               >
                 {loading ? "Memproses..." : "Daftar"}
               </button>
             </div>
           </form>
-          <div className="text-center text-sm text-[#163760]">
+          <div className="text-center text-xs md:text-sm text-[#163760]">
             Sudah punya akun?{" "}
             <a
               href="/login"
