@@ -18,25 +18,12 @@ export default function TakeQuestButton({ questId, pembuat_id }: TakeQuestButton
                 alert("Anda harus login untuk mengambil permintaan ini.");
                 return;
             }
-            if (pembuat_id == 0) {
-                alert("Anda harus login untuk mengambil permintaan ini.");
-                return;
-            }
 
             const deskripsi = prompt("Masukkan deskripsi atau pesan Anda:");
             if (!deskripsi) {
             alert("Deskripsi tidak boleh kosong.");
             return;
             }
-
-            console.log("Inserting data:", {
-            permintaan_id: questIdNumber,
-            pembuat_id: pembuat_id,
-            calon_penerima_id: loggedInUser.id,
-            status_penerimaan: "Pending",
-            deskripsi_penawar: deskripsi,
-            });
-
             const { error } = await supabase
             .from("users_permintaan")
             .insert([
@@ -61,7 +48,7 @@ export default function TakeQuestButton({ questId, pembuat_id }: TakeQuestButton
         >
             <button
             type="submit"
-            className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl"
+            className="p-2 px-8 text-xl text-white bg-blue-400 text-center rounded-2xl"
             >
             Tolong
             </button>

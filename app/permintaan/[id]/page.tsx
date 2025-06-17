@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/no-animation-navbar";
 import supabase from "@/lib/db";
 import QuestDetail from "@/components/quest-page-details";
-import Link from "next/link";
+import DetailButtonPermintaan from "@/components/detail-button-permintaan";
+
 
 export default async function PermintaanDetailPage({
   params,
@@ -41,17 +42,10 @@ export default async function PermintaanDetailPage({
           <div className="flex flex-col gap-2 w-full">
             <div className="flex gap-2 items-center justify-between w-full">
             <h1 className="text-3xl font-bold mb-4">{quest.nama_permintaan}</h1>
-              <div className="flex gap-2 items-center">
-              <Link
-                href="/edit-permintaan"
-                className="p-2 px-8 text-xl text-white bg-blue-400 text-center rounded-2xl"
-              >
-                Edit
-              </Link>
-              <div className="p-2 px-8 text-xl text-white bg-green-400 text-center rounded-2xl">
-                Selesai
-              </div>
-            </div>
+              <DetailButtonPermintaan
+                questId={quest.id}
+                pembuat_id={pembuat.id}
+              />
             </div>
             <div className="mb-2">
               Tingkat kedaruratan:{" "}

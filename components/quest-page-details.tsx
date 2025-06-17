@@ -1,6 +1,5 @@
 "use client";
 import { useUser } from "@/context/UserContext";
-import TakeQuestButton from "./takeQuestButton";
 import PenawarQuest from "./semuaPenawarSection";
 
 interface QuestDetailProps {
@@ -20,9 +19,9 @@ export default function QuestDetail({ questId, pembuat_id }: QuestDetailProps) {
           </div>
         </>
       ) : loggedInUser ? (
-        <TakeQuestButton questId={questId} pembuat_id={loggedInUser.id} />
+        <></>
       ) : (
-        <TakeQuestButton questId={questId} pembuat_id={0} />
+        <></>
       )}
     </>
   );
