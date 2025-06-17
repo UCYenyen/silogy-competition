@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const { loggedInUser, setLoggedInUser } = useUser();
+  const { loggedInUser } = useUser();
 
   useEffect(() => {
     const navbar = navRef.current;
