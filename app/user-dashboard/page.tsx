@@ -10,27 +10,25 @@ import LoadingOverlay from "@/components/loading-overlay";
 import { useUser } from "@/context/UserContext";
 
 export default function UserDashboardPage() {
-  const {loggedInUser} = useUser();
+  const { loggedInUser } = useUser();
   const [permintaan, setPermintaan] = useState<IPermintaan[]>([]);
-  const [takenQuests, setTakenQuests] = useState<IUserPermintaan[]>([]);
+  const [takenQuests, setTakenQuests] = useState<(IPermintaan & { status_penerimaan?: string })[]>([]);
   const [loading, setLoading] = useState(true);
   const [takenQuestsLoading, setTakenQuestsLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-
-  
   useEffect(() => {
     const fetchUserPermintaan = async () => {
       if (!loggedInUser?.id) return;
-      
+
       setLoading(true);
-      const { data: permintaan, error } = await supabase
+      const { data, error } = await supabase
         .from('permintaan')
         .select('*')
         .eq('pembuat_id', loggedInUser.id);
-      
-      if (!error && permintaan) {
-        setPermintaan(permintaan as IPermintaan[]);
+
+      if (!error && data) {
+        setPermintaan(data as IPermintaan[]);
       } else {
         setPermintaan([]);
         console.error('Error fetching user permintaan:', error);
@@ -39,36 +37,36 @@ export default function UserDashboardPage() {
     };
 
     fetchUserPermintaan();
-  }, [loggedInUser]); 
+  }, [loggedInUser]);
 
-  
   useEffect(() => {
     const fetchTakenQuests = async () => {
       if (!loggedInUser?.id) return;
-      
+
       setTakenQuestsLoading(true);
-      
-      
-      const { data: users_permintaan, error } = await supabase
+
+      // Join users_permintaan with permintaan and get status_penerimaan
+      const { data, error } = await supabase
         .from('users_permintaan')
-        .select('*')
+        .select('status_penerimaan, permintaan(*)')
         .eq('calon_penerima_id', loggedInUser.id);
-      
-      if (!error && users_permintaan) {
-        
-        const permintaanIds = users_permintaan.map((up: IUserPermintaan) => up.permintaan_id);
-        
-        if (permintaanIds.length > 0) {
-          const { data: takenPermintaan, error: permintaanError } = await supabase
-            .from('permintaan')
-            .select('*')
-            .in('id', permintaanIds);
-          
-          if (!permintaanError && takenPermintaan) {
-            setTakenQuests(takenPermintaan as IUserPermintaan[]);
-          }
-        }
+
+      if (!error && data) {
+        // data is array of { status_penerimaan, permintaan: {...} }
+        const quests = data
+          .map((item: { permintaan: IPermintaan | IPermintaan[] | null; status_penerimaan: string }) => {
+            // If permintaan is an array, take the first element; if it's an object, use it directly
+            const permintaanObj = Array.isArray(item.permintaan)
+              ? item.permintaan[0]
+              : item.permintaan;
+            return permintaanObj
+              ? { ...permintaanObj, status_penerimaan: item.status_penerimaan }
+              : null;
+          })
+          .filter(Boolean) as (IPermintaan & { status_penerimaan?: string })[];
+        setTakenQuests(quests);
       } else {
+        setTakenQuests([]);
         console.error('Error fetching taken quests:', error);
       }
       setTakenQuestsLoading(false);
@@ -79,7 +77,7 @@ export default function UserDashboardPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false); 
+      setIsLoading(false);
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -157,20 +155,26 @@ export default function UserDashboardPage() {
             </div>
           ) : (
             takenQuests.map((quest) => (
-              <div
+                <div
                 key={quest.id}
-                onClick={() => window.location.href = `/permintaan/${quest.id}`}
+                onClick={() => {
+                  if (quest.status_penerimaan === "Ditolak") {
+                  alert("Sayang sekali tawaran bantuanmu ditolak");
+                  } else {
+                  alert("Selamat tawaran bantuanmu diterima, silakan kontak pihak yang meminta tolong!");
+                  }
+                }}
                 className="block w-full h-full cursor-pointer"
-              >
+                >
                 <QuestCard
                   id={quest.id}
                   nama_permintaan={quest.nama_permintaan}
-                  status_permintaan={"Diambil"}
+                  status_permintaan={quest.status_penerimaan}
                   lokasi_permintaan={quest.lokasi_permintaan}
                   tingkat_kedaruratan={quest.tingkat_kedaruratan}
                   upah={quest.upah_permintaan}
                 />
-              </div>
+                </div>
             ))
           )}
         </div>
