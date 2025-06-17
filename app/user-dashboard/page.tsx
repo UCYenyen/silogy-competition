@@ -4,20 +4,18 @@ import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
 import supabase from "@/lib/db";
 import { IPermintaan } from "@/types/permintaan.md";
-import { IUser } from "@/types/user.md";
 import { IUserPermintaan } from "@/types/users_permintaan.md";
-import QuestCard from "@/components/quest-card";
+import QuestCard from "@/components/questYangDitawar";
 import LoadingOverlay from "@/components/loading-overlay";
 import { useUser } from "@/context/UserContext";
 
 export default function UserDashboardPage() {
   const {loggedInUser} = useUser();
   const [permintaan, setPermintaan] = useState<IPermintaan[]>([]);
-  const [takenQuests, setTakenQuests] = useState<IPermintaan[]>([]);
+  const [takenQuests, setTakenQuests] = useState<IUserPermintaan[]>([]);
   const [loading, setLoading] = useState(true);
   const [takenQuestsLoading, setTakenQuestsLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-
 
 
   
@@ -67,7 +65,7 @@ export default function UserDashboardPage() {
             .in('id', permintaanIds);
           
           if (!permintaanError && takenPermintaan) {
-            setTakenQuests(takenPermintaan as IPermintaan[]);
+            setTakenQuests(takenPermintaan as IUserPermintaan[]);
           }
         }
       } else {
@@ -167,6 +165,7 @@ export default function UserDashboardPage() {
                 <QuestCard
                   id={quest.id}
                   nama_permintaan={quest.nama_permintaan}
+                  status_permintaan={"Diambil"}
                   lokasi_permintaan={quest.lokasi_permintaan}
                   tingkat_kedaruratan={quest.tingkat_kedaruratan}
                   upah={quest.upah_permintaan}
@@ -267,6 +266,7 @@ export default function UserDashboardPage() {
                   nama_permintaan={quest.nama_permintaan}
                   lokasi_permintaan={quest.lokasi_permintaan}
                   tingkat_kedaruratan={quest.tingkat_kedaruratan}
+                  status_permintaan={quest.status_permintaan}
                   upah={quest.upah_permintaan}
                 />
               </div>

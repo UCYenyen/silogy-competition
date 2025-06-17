@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Navbar from "@/components/no-animation-navbar";
 import supabase from "@/lib/db";
-import Link from "next/link";
+import QuestDetail from "@/components/quest-page-details";
 
 export default async function PermintaanDetailPage({
   params,
@@ -10,6 +10,7 @@ export default async function PermintaanDetailPage({
 }) {
   // Await the params object
   const { id } = await params;
+  
 
   // Fetch specific permintaan data by id
   const { data: quest, error } = await supabase
@@ -58,28 +59,7 @@ export default async function PermintaanDetailPage({
             <div className="mb-2">No. Telepon: {pembuat.no_telpon}</div>
           </div>
           <div className="flex gap-2">
-            {pembuat.id !== quest.pembuat_id ? (
-              <>
-                <Link
-                  href="/edit-permintaan"
-                  className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl"
-                >
-                  Edit
-                </Link>
-                <div className="p-2 px-8 text-2xl text-white bg-green-400 text-center rounded-2xl">
-                  Selesai
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/"
-                  className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl"
-                >
-                  Tolong
-                </Link>
-              </>
-            )}
+            <QuestDetail questId={quest.id} pembuat_id={pembuat.id}/>
           </div>
         </div>
       </div>
