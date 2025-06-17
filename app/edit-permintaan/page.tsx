@@ -179,10 +179,9 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
                 className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
               >
                 <option value="">Pilih tingkat kedaruatan</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Urgent">Urgent</option>
+                <option value="Low">Biasas</option>
+                <option value="Medium">Sedang</option>
+                <option value="High">Sangat Mendesak</option>
               </select>
             </div>
             <div>
