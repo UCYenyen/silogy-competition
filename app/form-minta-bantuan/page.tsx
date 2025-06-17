@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import supabase from "@/lib/db";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUser } from "@/context/UserContext";
 import LogoutButton from "@/components/logoutButton";
 

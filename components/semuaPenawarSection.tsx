@@ -8,7 +8,7 @@ interface semuaPenawarSectionProps {
   id_quest: number;
 }
 
-export default function semuaPenawarSectionProps({
+export default function SemuaPenawarSectionProps({
   id_quest,
 }: semuaPenawarSectionProps) {
     const [permintaan, setPermintaan] = useState<IPermintaan[]>([]);

@@ -9,7 +9,7 @@ interface QuestDetailProps {
   pembuat_id: number;
 }
 
-export default function questDetail({ questId, pembuat_id }: QuestDetailProps) {
+export default function QuestDetail({ questId, pembuat_id }: QuestDetailProps) {
   const { loggedInUser } = useUser();
 
   return (
