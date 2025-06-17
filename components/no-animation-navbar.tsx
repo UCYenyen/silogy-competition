@@ -55,6 +55,12 @@ export default function NoAnimationNavbar() {
                 <p className="px-4 py-2 text-gray-700">
                   Halo, {loggedInUser?.username || "Pengguna"}
                 </p>
+                <Link
+                  href="/user-dashboard"
+                  className="px-4 text-black text-center hover:bg-gray-100 w-full"
+                >
+                  Dashboard
+                </Link>
                 <hr className="my-2" />
                 <LogoutButton />
               </div>
