@@ -4,7 +4,6 @@ import Footer from "@/components/footer";
 import { useEffect, useState } from "react";
 import supabase from "@/lib/db";
 import { IPermintaan } from "@/types/permintaan.md";
-import { IUserPermintaan } from "@/types/users_permintaan.md";
 import QuestCard from "@/components/questYangDitawar";
 import LoadingOverlay from "@/components/loading-overlay";
 import { useUser } from "@/context/UserContext";
