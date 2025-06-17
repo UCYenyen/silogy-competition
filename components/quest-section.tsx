@@ -73,14 +73,9 @@ export default function QuestSection() {
     ],
     lokasi: [
       "Suarabaya",
-      "Surabaya Barat",
-      "Surabaya Timur",
-      "Surabaya Utara",
-      "Surabaya Selatan",
-      "Lainnya",
     ],
     tingkatKedaruratan: [
-      "Mendesak",
+      "Biasa",
       "Sedang",
       "Sangat Mendesak",
     ],
@@ -116,6 +111,15 @@ export default function QuestSection() {
   // Function to get display text for dropdown button
   function getDisplayText(dropdownName: string, defaultText: string) {
     return selectedOptions[dropdownName as keyof typeof selectedOptions] || defaultText;
+  }
+
+  function matchUpahFilter(upah_permintaan: number, selectedUpah?: string) {
+    if (!selectedUpah) return true;
+    if (selectedUpah === "Tanpa Upah") return upah_permintaan === 0;
+    if (selectedUpah === "< Rp100.000") return upah_permintaan > 0 && upah_permintaan < 100000;
+    if (selectedUpah === "Rp100.000 - Rp500.000") return upah_permintaan >= 100000 && upah_permintaan <= 500000;
+    if (selectedUpah === "> Rp500.000") return upah_permintaan > 500000;
+    return true;
   }
 
   return (
@@ -298,28 +302,53 @@ export default function QuestSection() {
           <div className="col-span-full text-center text-gray-500">
             Loading permintaan...
           </div>
-        ) : quests.length === 0 ? (
-          <div className="col-span-full text-center text-gray-500">
-            Belum ada permintaan bantuan.
-          </div>
-        ) : (
-          quests.map((quest) => (
-            <div
-              key={quest.id}
-              onClick={() => handleQuestClick(quest.id)} // Handle click
-              className="block w-full h-full cursor-pointer"
-              style={{ textDecoration: "none" }}
-            >
-              <QuestCard
-                id={quest.id}
-                nama_permintaan={quest.nama_permintaan}
-                lokasi_permintaan={quest.lokasi_permintaan}
-                tingkat_kedaruratan={quest.tingkat_kedaruratan}
-                upah={quest.upah_permintaan}
-              />
+        ) : (() => {
+          // Filter quests based on selectedOptions
+          let filteredQuests = quests.filter((quest) => {
+            const tingkatKedaruratanMatch =
+              !selectedOptions.tingkatKedaruratan ||
+              quest.tingkat_kedaruratan === selectedOptions.tingkatKedaruratan;
+
+            const upahMatch = matchUpahFilter(quest.upah_permintaan, selectedOptions.upah);
+
+            return tingkatKedaruratanMatch && upahMatch;
+          });
+
+          // Optional: urutkan berdasarkan filter yang dipilih (misal: tingkat kedaruratan, upah, dst)
+          // Contoh: jika filter tingkat kedaruratan dipilih, urutkan berdasarkan itu
+          if (selectedOptions.tingkatKedaruratan) {
+            filteredQuests = filteredQuests.sort((a, b) =>
+              a.tingkat_kedaruratan.localeCompare(b.tingkat_kedaruratan)
+            );
+          } else if (selectedOptions.upah) {
+            filteredQuests = filteredQuests.sort((a, b) =>
+              a.upah_permintaan - b.upah_permintaan
+            );
+          }
+
+          return filteredQuests.length === 0 ? (
+            <div className="col-span-full text-center text-gray-500">
+              Belum ada permintaan bantuan.
             </div>
-          ))
-        )}
+          ) : (
+            filteredQuests.map((quest) => (
+              <div
+                key={quest.id}
+                onClick={() => handleQuestClick(quest.id)}
+                className="block w-full h-full cursor-pointer"
+                style={{ textDecoration: "none" }}
+              >
+                <QuestCard
+                  id={quest.id}
+                  nama_permintaan={quest.nama_permintaan}
+                  lokasi_permintaan={quest.lokasi_permintaan}
+                  tingkat_kedaruratan={quest.tingkat_kedaruratan}
+                  upah={quest.upah_permintaan}
+                />
+              </div>
+            ))
+          );
+        })()}
       </div>
     </section>
   );
