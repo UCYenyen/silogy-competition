@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { IUser } from "@/types/user.md";
+import { useUser } from "@/context/UserContext";
 import LogoutButton from "./logoutButton";
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -11,14 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
-
-  useEffect(() => {
-    const user = localStorage.getItem("loggedInUser");
-    if (user) {
-      setLoggedInUser(JSON.parse(user));
-    }
-  }, []);
+  const { loggedInUser, setLoggedInUser } = useUser();
 
   useEffect(() => {
     const navbar = navRef.current;

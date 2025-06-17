@@ -49,7 +49,7 @@ export default function RegisterPage() {
       style={{ backgroundImage: "url('/images/background-home-desktop.svg')" }}
     >
       <nav
-        className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+        className="fixed z-[200] w-full p-6 md:p-8 px-8 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
         style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
       >
         <div className="flex items-center gap-4 shadow-xs">
@@ -57,7 +57,7 @@ export default function RegisterPage() {
             TolongYuk!
           </Link>
         </div>
-        <div className="hidden md:flex items-center gap-4 shadow-xs">
+        <div className="flex items-center gap-4 shadow-xs">
           <Link href="/" className="hover:underline">
             Home
           </Link>
@@ -67,11 +67,6 @@ export default function RegisterPage() {
             </Link>
           </div>
         </div>
-        {/* Mobile menu button */}
-        <div className="flex flex-col gap-1.5 md:hidden shadow-xs">
-          <div className="w-10 bg-white h-1.5"></div>
-          <div className="w-10 bg-white h-1.5"></div>
-        </div>
       </nav>
       <div
         className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6"
@@ -79,7 +74,7 @@ export default function RegisterPage() {
           backgroundImage: "url('/images/background-home-no-noise.svg')",
         }}
       >
-        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-4 sm:px-6 md:px-10 py-8 md:py-16 shadow-lg w-full max-w-[90vw] sm:max-w-[28rem] md:max-w-[40rem]">
+        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl w-full p-4 max-w-[90%] md:max-w-[40rem]">
           <h1 className="text-2xl md:text-3xl font-bold text-[#163760] text-center mb-6 md:mb-12">
             Daftar
           </h1>

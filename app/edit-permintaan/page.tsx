@@ -82,7 +82,7 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
   return (
     <>
       <nav
-        className="fixed z-[200] w-full p-6 md:p-8 px-16 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
+        className="fixed z-[200] w-full p-6 md:p-8 px-8 flex items-center justify-between text-white text-lg md:text-xl font-bold transition-all duration-100 filter"
         style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} // Set initial transparent background
       >
         <div className="flex items-center gap-4 shadow-xs">
@@ -133,10 +133,10 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
       <div
         className="min-h-screen flex items-center justify-center bg-cover bg-center"
         style={{
-          backgroundImage: "url('/images/background-home-desktop.svg')",
+          backgroundImage: "url('/images/background-home-no-noise.svg')",
         }}
       >
-        <div className="bg-white/75 flex mt-24 flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-10 py-16 shadow-lg w-full justify-between max-w-[40rem]">
+        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl w-full p-4 max-w-[90%] md:max-w-[40rem]">
           <h1 className="text-3xl font-bold text-[#163760] text-center mb-12">
             Edit
           </h1>

@@ -131,12 +131,12 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
         </div>
       </nav>
       <div
-        className="min-h-screen flex items-center justify-center bg-cover bg-center"
+        className="min-h-screen pt-28 pb-28 flex items-center justify-center bg-cover bg-center"
         style={{
-          backgroundImage: "url('/images/background-home-desktop.svg')",
+          backgroundImage: "url('/images/background-home-no-noise.svg')",
         }}
       >
-        <div className="bg-white/75 flex mt-24 flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl px-10 py-16 shadow-lg w-full justify-between max-w-[40rem]">
+        <div className="bg-white/75 flex flex-col border-1 gap-4 border-white backdrop-blur-sm rounded-2xl w-full p-4 max-w-[90%] md:max-w-[40rem]">
           <h1 className="text-3xl font-bold text-[#163760] text-center mb-12">
             Buat Permintaan Bantuan
           </h1>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Caveat } from "next/font/google"; // Choose your preferred font
 import "./globals.css";
+import { UserProvider } from "@/context/UserContext";
 
 // Configure your custom font
 const customFont = Inter({
@@ -31,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${customFont.variable} ${headingFont.variable} antialiased`}
       >
-        {children}
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
