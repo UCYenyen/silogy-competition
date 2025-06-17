@@ -31,7 +31,7 @@ export default function TakeQuestButton({ questId, pembuat_id }: TakeQuestButton
                 permintaan_id: questIdNumber,
                 pembuat_id: pembuat_id,
                 calon_penerima_id: loggedInUser.id,
-                status_penerimaan: "Pending",
+                status_penerimaan: "Menunggu Konfirmasi",
                 deskripsi_penawar: deskripsi,
                 },
             ])
