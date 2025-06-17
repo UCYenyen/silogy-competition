@@ -8,26 +8,36 @@ interface semuaPenawarSectionProps {
   id_quest: number;
 }
 
+interface PenawarWithUser extends IPermintaan {
+  users: {
+    username: string;
+  } | null;
+}
+
 export default function SemuaPenawarSectionProps({
   id_quest,
 }: semuaPenawarSectionProps) {
-    const [permintaan, setPermintaan] = useState<IPermintaan[]>([]);
+  const [permintaan, setPermintaan] = useState<PenawarWithUser[]>([]);
 
-    // Fetch data when component mounts or id_quest changes
-    useEffect(() => {
-      const fetchPenawar = async () => {
-        const { data, error } = await supabase
-          .from("users_permintaan")
-          .select(`*`)
-          .eq("permintaan_id", id_quest);
+  useEffect(() => {
+    const fetchPenawar = async () => {
+      const { data, error } = await supabase
+        .from("users_permintaan")
+        .select(`
+          *,
+          users:calon_penerima_id (
+            username
+          )
+        `)
+        .eq("permintaan_id", id_quest);
 
-        if (!error && data) {
-          setPermintaan(data);
-        }
-      };
+      if (!error && data) {
+        setPermintaan(data);
+      }
+    };
 
-      fetchPenawar();
-    }, [id_quest]);
+    fetchPenawar();
+  }, [id_quest]);
 
   return (
     <>
@@ -37,7 +47,7 @@ export default function SemuaPenawarSectionProps({
           className="block w-full h-full cursor-pointer"
         >
           <PenawarCard
-            nama_penawar={quest.nama_permintaan}
+            nama_penawar={quest.users?.username || "Unknown"}
             deskripsi_penawar={quest.deskripsi_permintaan}
           />
         </div>

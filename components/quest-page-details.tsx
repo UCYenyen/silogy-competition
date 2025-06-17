@@ -16,17 +16,8 @@ export default function QuestDetail({ questId, pembuat_id }: QuestDetailProps) {
     <>
       {pembuat_id === loggedInUser?.id ? (
         <>
-          <div className="flex gap-4">
-            <Link
-              href="/edit-permintaan"
-              className="p-2 px-8 text-2xl text-white bg-blue-400 text-center rounded-2xl"
-            >
-              Edit
-            </Link>
-            <div className="p-2 px-8 text-2xl text-white bg-green-400 text-center rounded-2xl">
-              Selesai
-            </div>
-            <PenawarQuest id_quest={questId} />
+        <div className="flex flex-col gap-8">
+          <PenawarQuest id_quest={questId} />
           </div>
         </>
       ) : loggedInUser ? (
