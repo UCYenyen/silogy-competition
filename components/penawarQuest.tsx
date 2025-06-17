@@ -14,18 +14,16 @@ export default function PenawarCard({
   const handleTerima = async () => {
     try {
       // Update status_penerimaan di table users_permintaan
-      const { error: error1 } = await supabase
+      await supabase
         .from('users_permintaan')
         .update({ status_penerimaan: 'Diterima' })
         .eq('calon_penerima_id', penerima_id);
 
       // Update status_permintaan dan penerima_id di table permintaan
-      const { error: error2 } = await supabase
+      await supabase
         .from('permintaan')
         .update({ status_permintaan: 'sedang dikerjakan', penerima_id: penerima_id })
         // .eq('id', permintaanId); // tambahkan kondisi sesuai kebutuhan
-
-      if (error1 || error2) throw error1 || error2;
 
       alert('Penawaran berhasil diterima');
     } catch (error) {
