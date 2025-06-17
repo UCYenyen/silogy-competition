@@ -326,28 +326,34 @@ export default function QuestSection() {
             );
           }
 
-          return filteredQuests.length === 0 ? (
+            // Filter out quests with status "sedang dikerjakan"
+            filteredQuests = filteredQuests.filter(
+            (quest) => quest.status_permintaan !== "Sedang Dikerjakan" && quest.status_permintaan !== "Selesai"
+            );
+
+            return filteredQuests.length === 0 ? (
             <div className="col-span-full text-center text-gray-500">
               Belum ada permintaan bantuan.
             </div>
-          ) : (
+            ) : (
             filteredQuests.map((quest) => (
               <div
-                key={quest.id}
-                onClick={() => handleQuestClick(quest.id)}
-                className="block w-full h-full cursor-pointer"
-                style={{ textDecoration: "none" }}
+              key={quest.id}
+              onClick={() => handleQuestClick(quest.id)}
+              className="block w-full h-full cursor-pointer"
+              style={{ textDecoration: "none" }}
               >
-                <QuestCard
-                  id={quest.id}
-                  nama_permintaan={quest.nama_permintaan}
-                  lokasi_permintaan={quest.lokasi_permintaan}
-                  tingkat_kedaruratan={quest.tingkat_kedaruratan}
-                  upah={quest.upah_permintaan}
-                />
+              <QuestCard
+                id={quest.id}
+                nama_permintaan={quest.nama_permintaan}
+                lokasi_permintaan={quest.lokasi_permintaan}
+                status_permintaan={quest.status_permintaan}
+                tingkat_kedaruratan={quest.tingkat_kedaruratan}
+                upah={quest.upah_permintaan}
+              />
               </div>
             ))
-          );
+            );
         })()}
       </div>
     </section>
