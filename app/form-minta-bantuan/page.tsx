@@ -2,22 +2,16 @@
 import Link from "next/link";
 import supabase from "@/lib/db";
 import { useState, useEffect } from "react";
-import { IUser } from "@/types/user.md";
+import { useUser } from "@/context/UserContext";
 import LogoutButton from "@/components/logoutButton";
 
 export default function AskHelpForm() {
-  const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
-
-  useEffect(() => {
-    const user = localStorage.getItem("loggedInUser");
-    if (user) {
-      setLoggedInUser(JSON.parse(user));
-    }
-  }, []);
-const [dropdownVisible, setDropdownVisible] = useState(false);
-    const toggleDropdown = () => {
-      setDropdownVisible((prev) => !prev);
-    };
+  const {loggedInUser} = useUser();
+  
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const toggleDropdown = () => {
+    setDropdownVisible((prev) => !prev);
+  };
 
   const [form, setForm] = useState({
     title: "",
@@ -44,6 +38,11 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
     setLoading(true);
     setMessage(null);
 
+    if (!loggedInUser) {
+      setMessage("Anda harus login untuk membuat permintaan.");
+      setLoading(false);
+      return;
+    }
     const { error } = await supabase
       .from("permintaan")
       .insert([

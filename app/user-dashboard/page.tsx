@@ -8,21 +8,17 @@ import { IUser } from "@/types/user.md";
 import { IUserPermintaan } from "@/types/users_permintaan.md";
 import QuestCard from "@/components/quest-card";
 import LoadingOverlay from "@/components/loading-overlay";
+import { useUser } from "@/context/UserContext";
 
 export default function UserDashboardPage() {
-  const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
+  const {loggedInUser} = useUser();
   const [permintaan, setPermintaan] = useState<IPermintaan[]>([]);
   const [takenQuests, setTakenQuests] = useState<IPermintaan[]>([]);
   const [loading, setLoading] = useState(true);
   const [takenQuestsLoading, setTakenQuestsLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const user = localStorage.getItem("loggedInUser");
-    if (user) {
-      setLoggedInUser(JSON.parse(user));
-    }
-  }, []);
+
 
   
   useEffect(() => {
