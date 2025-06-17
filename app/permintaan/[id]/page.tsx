@@ -56,10 +56,9 @@ export default async function PermintaanDetailPage({
             <h2 className="text-2xl font-bold mb-4">Kontak</h2>
             <div className="mb-2">Nama: {pembuat.username}</div>
             <div className="mb-2">No. Telepon: {pembuat.no_telpon}</div>
-            <div> quest pembuat id: {quest.pembuat_id}, pembuat id: {pembuat.id}</div>
           </div>
           <div className="flex gap-2">
-            {pembuat.id === quest.pembuat_id ? (
+            {pembuat.id !== quest.pembuat_id ? (
               <>
                 <Link
                   href="/edit-permintaan"
