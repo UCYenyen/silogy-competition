@@ -24,9 +24,43 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
     location: "",
     tingkat_kedaruratan: "",
     description: "",
-    upah: "", // Tambahkan upah di state
+    upah: "",
     status: "Pending",
   });
+
+  useEffect(() => {
+    const fetchPermintaan = async () => {
+      const user = localStorage.getItem("loggedInUser");
+      if (!user) return;
+      const loggedInUser = JSON.parse(user);
+
+      const searchParams = new URLSearchParams(window.location.search);
+      const quest_id = searchParams.get("quest_id");
+      if (!quest_id) return;
+
+      const { data } = await supabase
+        .from("permintaan")
+        .select(
+          "nama_permintaan, lokasi_permintaan, tingkat_kedaruratan, deskripsi_permintaan, upah_permintaan, status_permintaan"
+        )
+        .eq("pembuat_id", loggedInUser.id)
+        .eq("id", quest_id)
+        .single();
+
+      if (data) {
+        setForm({
+          title: data.nama_permintaan || "",
+          location: data.lokasi_permintaan || "",
+          tingkat_kedaruratan: data.tingkat_kedaruratan || "",
+          description: data.deskripsi_permintaan || "",
+          upah: data.upah_permintaan || "",
+          status: data.status_permintaan || "Pending",
+        });
+      }
+    };
+
+    fetchPermintaan();
+  }, []);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -44,21 +78,37 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
     setLoading(true);
     setMessage(null);
 
+    if (!loggedInUser?.id) {
+      setMessage("User tidak ditemukan. Silakan login kembali.");
+      setLoading(false);
+      return;
+    }
+
+    // Ambil quest_id dari query parameter URL
+    const searchParams = new URLSearchParams(window.location.search);
+    const quest_id = searchParams.get("quest_id");
+
+    if (!quest_id) {
+      setMessage("quest_id tidak ditemukan di URL.");
+      setLoading(false);
+      return;
+    }
+
+    
+    
+    
     const { error } = await supabase
       .from("permintaan")
-      .insert([
-        {
-          nama_permintaan: form.title,
-          lokasi_permintaan: form.location,
-          deskripsi_permintaan: form.description,
-          upah_permintaan: form.upah, // Tambahkan upah ke data yang dikirim
-          status_permintaan: form.status,
-          created_at: new Date().toISOString(),
-          pembuat_id: loggedInUser?.id || null,
-          tingkat_kedaruratan: form.tingkat_kedaruratan,
-        },
-      ])
-      .select();
+      .update({
+      nama_permintaan: form.title,
+      lokasi_permintaan: form.location,
+      deskripsi_permintaan: form.description,
+      upah_permintaan: form.upah,
+      status_permintaan: form.status,
+      tingkat_kedaruratan: form.tingkat_kedaruratan,
+      })
+      .eq("pembuat_id", loggedInUser.id)
+      .eq("id", quest_id);
 
     if (error) {
       console.error("Error creating request:", error.message);
@@ -179,7 +229,7 @@ const [dropdownVisible, setDropdownVisible] = useState(false);
                 className="w-full border-b-2 border-[#163760] bg-transparent text-[#163760] placeholder-[#163760] placeholder-opacity-20 focus:outline-none focus:ring-0 focus:border-[#163760] py-2"
               >
                 <option value="">Pilih tingkat kedaruatan</option>
-                <option value="Low">Biasas</option>
+                <option value="Low">Biasa</option>
                 <option value="Medium">Sedang</option>
                 <option value="High">Sangat Mendesak</option>
               </select>

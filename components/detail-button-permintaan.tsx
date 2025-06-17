@@ -15,12 +15,12 @@ export default function QuestDetail({ questId, pembuat_id }: QuestDetailProps) {
     <>
       {pembuat_id === loggedInUser?.id ? (
         <div className="flex gap-2 items-center">
-              <Link
-                href="/edit-permintaan"
+                <Link
+                href={`/edit-permintaan?quest_id=${questId}`}
                 className="p-2 px-8 text-xl text-white bg-blue-400 text-center rounded-2xl"
-              >
+                >
                 Edit
-              </Link>
+                </Link>
               <div className="p-2 px-8 text-xl text-white bg-green-400 text-center rounded-2xl">
                 Selesai
               </div>
