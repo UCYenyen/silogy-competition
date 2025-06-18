@@ -16,7 +16,7 @@ export default function LebihLanjutPage() {
           </div>
           
           <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
-            <p className="text-xl leading-relaxed">
+            <p className="leading-relaxed">
               TolongYuk! adalah platform gotong royong digital yang menghubungkan 
               kebutuhan masyarakat dengan aksi nyata dari para relawan dan pekerja lokal.
             </p>
