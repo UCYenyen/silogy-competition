@@ -244,7 +244,8 @@ export default function Home() {
                   semua!
                 </p>
 
-                <div className="p-4 bg-white rounded-lg reveal shadow-lg">
+                <button onClick={() => window.location.href = "/about"}
+                className="p-4 bg-white rounded-lg reveal shadow-lg hover:scale-106 duration-300">
                   <p className="font-semibold text-2xl flex items-center gap-4">
                     Lebih Lanjut
                     <svg
@@ -261,7 +262,7 @@ export default function Home() {
                       />
                     </svg>
                   </p>
-                </div>
+                </button>
               </div>
             </div>
           </div>
