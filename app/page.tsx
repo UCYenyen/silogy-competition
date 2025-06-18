@@ -244,7 +244,7 @@ export default function Home() {
                   semua!
                 </p>
 
-                <button onClick={() => window.location.href = "/about"}
+                <button onClick={() => window.location.href = "/lebih-lanjut"}
                 className="p-4 bg-white rounded-lg reveal shadow-lg hover:scale-106 duration-300">
                   <p className="font-semibold text-2xl flex items-center gap-4">
                     Lebih Lanjut
